@@ -1,3 +1,11 @@
+from pathlib import Path
+
+from alembic.config import Config
+from alembic.script import ScriptDirectory
+
+BACKEND = Path(__file__).resolve().parents[1]
+
+
 async def test_health_is_dependency_free(client):
     response = await client.get("/health")
     assert response.status_code == 200
@@ -11,7 +19,8 @@ async def test_ready_reports_database_migration_and_pgvector(client):
     checks = response.json()["checks"]
     assert checks["database"] == "ok"
     assert checks["pgvector"] == "ok"
-    assert checks["migration"] == "0001_baseline"
+    head = ScriptDirectory.from_config(Config(str(BACKEND / "alembic.ini"))).get_current_head()
+    assert checks["migration"] == head
 
 
 async def test_unknown_route_uses_error_envelope(client):

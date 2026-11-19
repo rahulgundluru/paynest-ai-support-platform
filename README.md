@@ -12,13 +12,14 @@ All case data is synthetic; see [docs/discovery](docs/discovery/README.md) for t
 | Phase | Scope | State |
 |---|---|---|
 | 0 Discovery | Source analysis, decisions, risk register | Done |
-| 1 Foundation | Repo layout, FastAPI + auth/RBAC + audit, Alembic, Next.js shell, Docker, CI | **Done locally (Docker run pending, see below)** |
-| 2 Data pipeline | Ingestion, PII gate, normalization, customer/SLA lookup | Pending |
+| 1 Foundation | Repo layout, FastAPI + auth/RBAC + audit, Alembic, Next.js shell, Docker, CI | Done locally (Docker images not yet built) |
+| 2 Data pipeline | Ingestion, PII gate + vault, normalization, customer/SLA lookup, ticket screens | **Done locally** ([details](docs/architecture/data-pipeline.md)) |
 | 3 AI pipeline | Classification, dedupe, routing, KB, date-aware RAG | Pending |
 | 4 Human & security | Approvals, output validation, injection handling, cache, memory | Pending |
 | 5 Frontend | All screens on real APIs | Pending |
 | 6 Evaluation | G1–G7 runners, reports, CI gates | Pending |
 | 7 AWS | Deployment | Pending |
+| 8 Delivery | Docs, diagrams, demo, presentation | Pending |
 
 Screens for unbuilt modules appear in the navigation as non-interactive "Phase N" entries; no screen shows
 estimated or placeholder business metrics.
@@ -41,6 +42,7 @@ scripts/          source data fetch/verify
 cp .env.example .env                     # then set POSTGRES_PASSWORD and JWT_SECRET
 python scripts/source_data.py fetch      # pulls the pinned source data into data/source/
 docker compose up --build                # db, migrate, api (:8000), web (:3000)
+docker compose exec api python -m app.cli ingest   # or "Run ingestion" on the Data ingestion page
 docker compose run --rm -e PAYNEST_NEW_USER_PASSWORD api python -m app.cli create-user \
   --email you@example.com --name "Your Name" --role admin --region IN --region UAE
 ```

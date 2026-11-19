@@ -27,8 +27,8 @@ export default function DashboardPage() {
 
       <Card title="Operational metrics">
         <Alert tone="warning">
-          No tickets have been ingested yet. Ticket, SLA and AI metrics appear here once the Phase 2 ingestion pipeline
-          has processed the source data; none are estimated or pre-filled.
+          Dashboard metrics and charts are built in Phase 5 from the ingested data. Until then, use the Tickets and
+          Data ingestion pages; no metric on this page is estimated or pre-filled.
         </Alert>
       </Card>
 

@@ -21,7 +21,7 @@ async def test_login_returns_token_cookie_and_profile(client, make_user):
     assert body["token_type"] == "bearer"
     assert body["user"]["roles"] == ["support_lead"]
     assert body["user"]["regions"] == ["IN", "UAE"]
-    assert body["user"]["permissions"] == ["audit:read"]
+    assert "audit:read" in body["user"]["permissions"] and "users:manage" not in body["user"]["permissions"]
     cookie = response.headers["set-cookie"].lower()
     assert "httponly" in cookie and "samesite=lax" in cookie
 

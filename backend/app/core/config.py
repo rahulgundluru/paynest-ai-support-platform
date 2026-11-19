@@ -26,6 +26,15 @@ class Settings(BaseSettings):
 
     cors_origins: list[str] = Field(default_factory=list)
 
+    # Fernet key (urlsafe base64, 32 bytes) for the PII vault and raw source records.
+    # Generate: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+    pii_vault_key: SecretStr = Field(description="Encryption key for PII vault and raw records")
+    # Retention for vault values and raw records. ASSUMPTION pending the DPO's retention decision.
+    pii_retention_days: int = 365
+
+    # Read-only mirror of the upstream case repository (see scripts/source_data.py).
+    data_source_dir: str = Field(default="../data/source")
+
     @field_validator("jwt_secret")
     @classmethod
     def _secret_strength(cls, value: SecretStr) -> SecretStr:

@@ -35,8 +35,12 @@ services:
       ENVIRONMENT: local
       DATABASE_URL: postgresql+asyncpg://paynest:${POSTGRES_PASSWORD}@db:5432/paynest
       JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env}
+      PII_VAULT_KEY: ${PII_VAULT_KEY:?set PII_VAULT_KEY in .env}
+      DATA_SOURCE_DIR: /data/source
       COOKIE_SECURE: "false" # plain HTTP on localhost only; true behind TLS in AWS
       LOG_LEVEL: INFO
+    volumes:
+      - ./data:/data:ro # source mirror (read-only) + manifest
     ports:
       - "127.0.0.1:8000:8000"
     depends_on:

@@ -1,7 +1,7 @@
 """Role → permission mapping, defined in code and reviewed like any other business rule.
 
-Later phases add permissions here (e.g. ticket processing, approvals, PII reveal) together
-with the endpoints that need them, so every permission in this file is enforced somewhere.
+Every permission listed here is enforced by at least one endpoint. Later phases add permissions
+together with the endpoints that need them (approvals, PII reveal, evaluations, settings).
 """
 
 from __future__ import annotations
@@ -14,17 +14,25 @@ from app.models.identity import RoleName
 class Permission(enum.StrEnum):
     AUDIT_READ = "audit:read"
     USERS_MANAGE = "users:manage"
+    TICKETS_READ = "tickets:read"
+    CUSTOMERS_READ = "customers:read"
+    SLA_READ = "sla:read"
+    INGESTION_RUN = "ingestion:run"
+    INGESTION_READ = "ingestion:read"
 
+
+_SUPPORT = frozenset({Permission.TICKETS_READ, Permission.CUSTOMERS_READ})
 
 ROLE_PERMISSIONS: dict[RoleName, frozenset[Permission]] = {
-    RoleName.AGENT_L1: frozenset(),
-    RoleName.AGENT_L2: frozenset(),
-    RoleName.ENGINEER_L3: frozenset(),
-    RoleName.SUPPORT_LEAD: frozenset({Permission.AUDIT_READ}),
-    RoleName.KB_OWNER: frozenset(),
-    RoleName.DPO: frozenset({Permission.AUDIT_READ}),
-    RoleName.FINANCE_VIEWER: frozenset(),
-    RoleName.ADMIN: frozenset({Permission.AUDIT_READ, Permission.USERS_MANAGE}),
+    RoleName.AGENT_L1: _SUPPORT,
+    RoleName.AGENT_L2: _SUPPORT,
+    RoleName.ENGINEER_L3: _SUPPORT,
+    RoleName.SUPPORT_LEAD: _SUPPORT
+    | {Permission.AUDIT_READ, Permission.SLA_READ, Permission.INGESTION_RUN, Permission.INGESTION_READ},
+    RoleName.KB_OWNER: frozenset({Permission.TICKETS_READ}),
+    RoleName.DPO: frozenset({Permission.AUDIT_READ, Permission.TICKETS_READ, Permission.INGESTION_READ}),
+    RoleName.FINANCE_VIEWER: frozenset({Permission.CUSTOMERS_READ, Permission.SLA_READ}),
+    RoleName.ADMIN: frozenset(Permission),
 }
 
 

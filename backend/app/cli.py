@@ -11,15 +11,19 @@ from __future__ import annotations
 import argparse
 import asyncio
 import getpass
+import json
 import os
 import sys
+from pathlib import Path
 
 from sqlalchemy import select
 
+from app.core.config import get_settings
 from app.core.security import hash_password
 from app.db.session import get_engine, get_sessionmaker
 from app.models.identity import Region, RoleName, User, UserRegionScope, UserRole
 from app.services import audit
+from app.services.ingestion.pipeline import SourceDataMissing, run_ingestion
 
 
 async def create_user(email: str, name: str, roles: list[RoleName], regions: list[Region], password: str) -> None:
@@ -44,6 +48,19 @@ async def create_user(email: str, name: str, roles: list[RoleName], regions: lis
     await get_engine().dispose()
 
 
+async def ingest(path: Path) -> int:
+    settings = get_settings()
+    async with get_sessionmaker()() as session:
+        try:
+            batch = await run_ingestion(session, path, retention_days=settings.pii_retention_days)
+        except SourceDataMissing as exc:
+            print(str(exc), file=sys.stderr)
+            return 2
+        print(json.dumps({"batch_id": str(batch.id), "status": batch.status, **batch.summary}, indent=2))
+    await get_engine().dispose()
+    return 0 if batch.status == "completed" else 1
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(prog="python -m app.cli")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -52,7 +69,12 @@ def main() -> int:
     cu.add_argument("--name", required=True)
     cu.add_argument("--role", action="append", required=True, choices=[r.value for r in RoleName])
     cu.add_argument("--region", action="append", required=True, choices=[r.value for r in Region])
+    ing = sub.add_parser("ingest", help="ingest the source exports (idempotent) and print the batch summary")
+    ing.add_argument("--source-dir", default=None, help="defaults to DATA_SOURCE_DIR")
     args = parser.parse_args()
+
+    if args.command == "ingest":
+        return asyncio.run(ingest(Path(args.source_dir or get_settings().data_source_dir).resolve()))
 
     password = os.environ.get("PAYNEST_NEW_USER_PASSWORD") or getpass.getpass("Password: ")
     if len(password) < 12:

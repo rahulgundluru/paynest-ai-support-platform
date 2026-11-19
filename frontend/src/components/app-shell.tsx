@@ -17,13 +17,14 @@ interface NavItem {
 
 const NAV: NavItem[] = [
   { label: "Dashboard", href: "/dashboard" },
-  { label: "Tickets", phase: 2 },
+  { label: "Tickets", href: "/tickets", permission: "tickets:read" },
   { label: "Processing monitor", phase: 3 },
   { label: "Incidents & duplicates", phase: 3 },
   { label: "Knowledge base", phase: 3 },
   { label: "Review queue", phase: 4 },
   { label: "Evaluations", phase: 6 },
   { label: "Cost analytics", phase: 6 },
+  { label: "Data ingestion", href: "/ingestion", permission: "ingestion:read" },
   { label: "Audit log", href: "/audit", permission: "audit:read" },
   { label: "Settings", phase: 5 },
 ];
@@ -46,7 +47,7 @@ export function AppShell({ user, children }: { user: User; children: ReactNode }
       </header>
       <aside
         id="sidebar"
-        className={`${open ? "block" : "hidden"} w-full border-b border-border bg-surface md:block md:min-h-screen md:w-60 md:border-r md:border-b-0`}
+        className={`${open ? "block" : "hidden"} w-full border-b border-border bg-surface md:block md:min-h-screen md:w-60 md:shrink-0 md:border-r md:border-b-0`}
       >
         <div className="hidden px-5 py-4 md:block">
           <p className="font-semibold">PayNest</p>
@@ -80,7 +81,7 @@ export function AppShell({ user, children }: { user: User; children: ReactNode }
           </ul>
         </nav>
       </aside>
-      <div className="flex-1">
+      <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center justify-end gap-3 border-b border-border bg-surface px-4 py-2 md:px-6">
           <span className="text-sm text-text-muted">
             {user.full_name} · {user.regions.join(" / ")}

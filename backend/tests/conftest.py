@@ -14,6 +14,7 @@ from collections.abc import AsyncIterator, Awaitable, Callable
 from pathlib import Path
 
 import pytest
+from cryptography.fernet import Fernet
 
 TEST_DB = os.environ.get("TEST_DATABASE_URL")
 if not TEST_DB:
@@ -24,6 +25,8 @@ os.environ["ENVIRONMENT"] = "test"
 os.environ["JWT_SECRET"] = secrets.token_urlsafe(48)
 os.environ["COOKIE_SECURE"] = "false"
 os.environ["LOG_LEVEL"] = "INFO"
+os.environ["PII_VAULT_KEY"] = Fernet.generate_key().decode()
+os.environ.setdefault("DATA_SOURCE_DIR", str(Path(__file__).resolve().parents[2] / "data" / "source"))
 
 import httpx  # noqa: E402
 from sqlalchemy import text  # noqa: E402
@@ -42,8 +45,10 @@ def migrated_database() -> None:
 
 
 @pytest.fixture(autouse=True)
-async def clean_tables() -> AsyncIterator[None]:
+async def clean_tables(request: pytest.FixtureRequest) -> AsyncIterator[None]:
     yield
+    if request.node.get_closest_marker("ingested"):
+        return  # module shares one ingested dataset; it resets the database itself
     async with get_sessionmaker()() as session:
         # TRUNCATE does not fire the row-level append-only trigger on audit_logs.
         await session.execute(text("TRUNCATE audit_logs, auth_sessions, user_region_scopes, user_roles, users CASCADE"))
