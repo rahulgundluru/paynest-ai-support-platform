@@ -15,14 +15,14 @@ All case data is synthetic; see [docs/discovery](docs/discovery/README.md) for t
 | 1 Foundation | Repo layout, FastAPI + auth/RBAC + audit, Alembic, Next.js shell, Docker, CI | Done locally (Docker images not yet built) |
 | 2 Data pipeline | Ingestion, PII gate + vault, normalization, customer/SLA lookup, ticket screens | **Done locally** ([details](docs/architecture/data-pipeline.md)) |
 | 3 AI pipeline | KB with effective dates, date-aware retrieval, dedupe/incidents, deterministic routing, classifier + Bedrock adapter | **Done locally except model-dependent parts** ([details](docs/architecture/ai-pipeline.md)); G2 + embeddings need Bedrock access |
-| 4 Human & security | Approvals, output validation, injection handling, cache, memory | Pending |
-| 5 Frontend | All screens on real APIs | Pending |
+| 4 Human & security | Review queue + approval workflow, output validation (G6), learned memory, DPO-only PII reveal, rate limiting | **Done locally** ([details](docs/architecture/human-approval-security.md)); AI drafts, semantic cache and DB row-level security pending |
+| 5 Frontend | Live dashboard and charts, processing monitor, customers, settings (runtime config) | **Done locally** ([details](docs/architecture/frontend.md)) |
 | 6 Evaluation | G1–G7 runners, reports, CI gates | Pending |
 | 7 AWS | Deployment | Pending |
 | 8 Delivery | Docs, diagrams, demo, presentation | Pending |
 
-Screens for unbuilt modules appear in the navigation as non-interactive "Phase N" entries; no screen shows
-estimated or placeholder business metrics.
+Screens for unbuilt modules (Evaluations, Cost analytics) appear in the navigation as non-interactive "Phase 6"
+entries; no screen shows estimated or placeholder business metrics.
 
 ## Layout
 
@@ -46,6 +46,7 @@ docker compose exec api python -m app.cli ingest             # or "Run ingestion
 docker compose exec api python -m app.cli index-knowledge
 docker compose exec api python -m app.cli detect-duplicates
 docker compose exec api python -m app.cli route-all
+docker compose exec api python -m app.cli build-review-queue
 docker compose run --rm -e PAYNEST_NEW_USER_PASSWORD api python -m app.cli create-user \
   --email you@example.com --name "Your Name" --role admin --region IN --region UAE
 ```

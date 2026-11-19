@@ -5,8 +5,10 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { PiiReveal } from "@/components/pii-reveal";
 import { TicketRoutingCard } from "@/components/ticket-routing";
 import { Alert, Badge, Card, Spinner } from "@/components/ui";
+import { hasPermission, useCurrentUser } from "@/hooks/use-auth";
 import { ApiError, apiFetch } from "@/lib/api";
 import { CATEGORY_LABELS, CHANNEL_LABELS, formatIst, humanize } from "@/lib/format";
 import type { TicketDetail } from "@/types/api";
@@ -27,6 +29,8 @@ function YesNo({ value }: { value: boolean | null | undefined }) {
 
 export default function TicketDetailPage() {
   const { ref } = useParams<{ ref: string }>();
+  const { data: user } = useCurrentUser();
+  const canReveal = hasPermission(user, "pii:reveal");
   const query = useQuery<TicketDetail>({
     queryKey: ["ticket", ref],
     queryFn: () => apiFetch(`/api/v1/tickets/${encodeURIComponent(ref)}`),
@@ -139,8 +143,11 @@ export default function TicketDetailPage() {
           ) : (
             <ul className="space-y-1 text-sm">
               {t.pii_detections.map((d, i) => (
-                <li key={i} className="flex justify-between gap-2">
-                  <span className="font-mono text-xs">{d.token}</span>
+                <li key={i} className="flex flex-wrap justify-between gap-2">
+                  <span className="flex items-center gap-2">
+                    <span className="font-mono text-xs">{d.token}</span>
+                    {canReveal && <PiiReveal ticketRef={t.external_id ?? t.id} token={d.token} />}
+                  </span>
                   <span className="text-xs text-text-muted">
                     {humanize(d.field)} · {d.method}
                     {d.checksum_valid === false ? " · checksum failed" : ""}

@@ -15,6 +15,10 @@
   --success-bg: #ecfdf3;
   --warning: #93370d;
   --warning-bg: #fffaeb;
+  /* data-viz: one series slot (validated: reference palette slot 1) + recessive chart ink */
+  --series-1: #2a78d6;
+  --chart-grid: #e6e5e1;
+  --chart-axis: #6b6a66;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -33,6 +37,9 @@
     --success-bg: #0f2419;
     --warning: #fdb022;
     --warning-bg: #2a2010;
+    --series-1: #3987e5;
+    --chart-grid: #2c2c2a;
+    --chart-axis: #a3a29b;
   }
 }
 

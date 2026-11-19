@@ -27,6 +27,18 @@ from app.services.normalization.rules import CATEGORY_QUEUE
 
 RULESET_VERSION = "route-2026.11.19"
 
+RULES: tuple[tuple[str, str, str], ...] = (
+    ("R1", "block", "Instructions aimed at an AI in the ticket text -> Security-Review"),
+    ("R2", "human_review", "Customer identity not verified -> Customer-Verification"),
+    ("R3", "route_queue", "Follow-up of an earlier ticket -> original case's queue"),
+    ("R4", "incident", "Part of an open incident -> Incident-Response"),
+    ("R5", "human_review", "No category, low classifier confidence, or classifier asks for a person"),
+    ("R6", "draft_for_agent", "P1 on payroll or billing -> draft, approval required (two-person rule)"),
+    ("R7", "draft_for_agent", "Statutory -> draft citing the rule in force, approval required (two-person rule)"),
+    ("R8", "draft_for_agent", "How-To -> draft from cited knowledge (auto-answer locked in pilot)"),
+    ("R9", "route_queue", "Everything else -> the category's queue"),
+)
+
 QUEUE_LEVEL = {
     "General-L1": "L1",
     "Access-Support": "L1",

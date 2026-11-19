@@ -1,5 +1,6 @@
 """Import every model so Alembic autogenerate sees the full metadata."""
 
+from app.models.approvals import Approval, ApprovalEvent, LearnedMemory
 from app.models.audit import AuditLog
 from app.models.identity import AuthSession, Region, RoleName, User, UserRegionScope, UserRole
 from app.models.knowledge import (
@@ -12,6 +13,7 @@ from app.models.knowledge import (
 )
 from app.models.processing import Classification, Incident, IncidentLink, ModelUsage, RoutingDecision
 from app.models.reference import Agent, Customer, FinanceSlaBreach, SlaTerm
+from app.models.settings import SystemConfiguration
 from app.models.tickets import (
     IngestionBatch,
     NormalizationLog,
@@ -25,6 +27,10 @@ from app.models.tickets import (
 )
 
 __all__ = [
+    "SystemConfiguration",
+    "Approval",
+    "ApprovalEvent",
+    "LearnedMemory",
     "Classification",
     "Incident",
     "IncidentLink",

@@ -70,9 +70,17 @@ async def pipeline_step(command: str, source_dir: Path) -> int:
         if command == "index-knowledge":
             result = await index_knowledge(session, source_dir)
         elif command == "detect-duplicates":
-            result = await run_detection(session)
+            from app.services.runtime_config import load_runtime_config
+
+            result = await run_detection(session, (await load_runtime_config(session))[1])
+        elif command == "build-review-queue":
+            from app.services.approvals.service import build_review_queue
+
+            result = await build_review_queue(session)
         else:
-            result = await route_all(session)
+            from app.services.runtime_config import load_runtime_config
+
+            result = await route_all(session, (await load_runtime_config(session))[0])
         print(json.dumps(result, indent=2, default=str))
     await get_engine().dispose()
     return 0
@@ -91,11 +99,12 @@ def main() -> int:
     sub.add_parser("index-knowledge", help="build/refresh the knowledge base from the source mirror")
     sub.add_parser("detect-duplicates", help="rebuild automatic resubmission and incident groupings")
     sub.add_parser("route-all", help="record a routing decision for every ticket (baseline)")
+    sub.add_parser("build-review-queue", help="open review items for tickets whose routing requires a person")
     args = parser.parse_args()
 
     if args.command == "ingest":
         return asyncio.run(ingest(Path(args.source_dir or get_settings().data_source_dir).resolve()))
-    if args.command in ("index-knowledge", "detect-duplicates", "route-all"):
+    if args.command in ("index-knowledge", "detect-duplicates", "route-all", "build-review-queue"):
         return asyncio.run(pipeline_step(args.command, Path(get_settings().data_source_dir).resolve()))
 
     password = os.environ.get("PAYNEST_NEW_USER_PASSWORD") or getpass.getpass("Password: ")

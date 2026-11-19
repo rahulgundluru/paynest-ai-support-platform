@@ -45,6 +45,13 @@ def migrated_database() -> None:
 
 
 @pytest.fixture(autouse=True)
+def reset_rate_limits() -> None:
+    from app.core.ratelimit import login_limiter
+
+    login_limiter.reset()
+
+
+@pytest.fixture(autouse=True)
 async def clean_tables(request: pytest.FixtureRequest) -> AsyncIterator[None]:
     yield
     if request.node.get_closest_marker("ingested"):

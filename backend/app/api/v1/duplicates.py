@@ -17,6 +17,7 @@ from app.schemas.common import Page
 from app.schemas.processing import IncidentDetail, IncidentLinkOut, IncidentOut, LinkRequest
 from app.services import audit
 from app.services.deduplication.service import run_detection
+from app.services.runtime_config import load_runtime_config
 
 router = APIRouter(prefix="/duplicates", tags=["duplicates"])
 Reader = Annotated[Principal, Depends(require(Permission.TICKETS_READ))]
@@ -109,7 +110,8 @@ async def get_incident(incident_id: uuid.UUID, session: SessionDep, principal: R
 
 @router.post("/detect")
 async def detect(session: SessionDep, principal: Manager) -> dict[str, int]:
-    return await run_detection(session, actor=principal.user.id)
+    _, config = await load_runtime_config(session)
+    return await run_detection(session, config, actor=principal.user.id)
 
 
 async def _ticket(session: SessionDep, principal: Principal, ref: str) -> Ticket:

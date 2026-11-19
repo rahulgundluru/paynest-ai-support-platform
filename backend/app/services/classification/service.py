@@ -67,7 +67,11 @@ def _cost(settings: Settings, input_tokens: int, output_tokens: int) -> Decimal 
 
 
 async def classify_ticket(
-    session: AsyncSession, ticket: Ticket, provider: LLMProvider | None, settings: Settings
+    session: AsyncSession,
+    ticket: Ticket,
+    provider: LLMProvider | None,
+    settings: Settings,
+    threshold: float | None = None,
 ) -> Classification:
     heuristics = injection_signals(ticket.subject_redacted, ticket.body_redacted)
     base = {"ticket_id": ticket.id, "prompt_version": prompt.PROMPT_VERSION}
@@ -130,7 +134,9 @@ async def classify_ticket(
             last_error = "schema_validation_failed"
             continue
         requires_human = (
-            out.requires_human or out.confidence < settings.classification_confidence_threshold or bool(heuristics)
+            out.requires_human
+            or out.confidence < (threshold if threshold is not None else settings.classification_confidence_threshold)
+            or bool(heuristics)
         )
         row = Classification(
             **base,

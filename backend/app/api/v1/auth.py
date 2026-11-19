@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException, Response, status
+from fastapi import APIRouter, HTTPException, Request, Response, status
 
 from app.api.deps import PrincipalDep, SessionDep, SettingsDep
+from app.core.ratelimit import login_limiter
 from app.core.rbac import permissions_for
 from app.models.identity import User
 from app.schemas.auth import LoginRequest, LoginResponse, UserOut
@@ -24,7 +25,19 @@ def _user_out(user: User) -> UserOut:
 
 
 @router.post("/login", response_model=LoginResponse)
-async def login(body: LoginRequest, response: Response, session: SessionDep, settings: SettingsDep) -> LoginResponse:
+async def login(
+    body: LoginRequest, request: Request, response: Response, session: SessionDep, settings: SettingsDep
+) -> LoginResponse:
+    client = request.client.host if request.client else "unknown"
+    retry_after = login_limiter.hit(f"{body.email}|{client}")
+    if retry_after is not None:
+        await audit.record(session, "auth.rate_limited", details={"retry_after_s": round(retry_after)})
+        await session.commit()
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Too many sign-in attempts. Try again later.",
+            headers={"Retry-After": str(max(1, round(retry_after)))},
+        )
     try:
         user = await authenticate(session, body.email, body.password)
     except AuthenticationError:

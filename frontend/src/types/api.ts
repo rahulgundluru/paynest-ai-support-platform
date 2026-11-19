@@ -23,7 +23,13 @@ export type Permission =
   | "knowledge:read"
   | "knowledge:manage"
   | "incidents:manage"
-  | "tickets:process";
+  | "tickets:process"
+  | "approvals:read"
+  | "approvals:edit"
+  | "approvals:decide"
+  | "pii:reveal"
+  | "settings:read"
+  | "settings:manage";
 
 export interface Sla {
   applicable: boolean;
@@ -288,4 +294,77 @@ export interface TicketRouting {
   classification: Classification | null;
   routing: RoutingDecision | null;
   incidents: Incident[];
+}
+
+export interface ApprovalSummary {
+  id: string;
+  ticket_id: string;
+  ticket_external_id: string | null;
+  region: string | null;
+  status: string;
+  lane: string;
+  queue: string;
+  rule_id: string;
+  escalation_reason: string;
+  summary: string;
+  sla_breached: boolean | null;
+  draft_source: string;
+  validation_passed: boolean | null;
+  created_at: string;
+  decided_at: string | null;
+}
+
+export interface ValidationCheck {
+  name: string;
+  passed: boolean;
+  detail: string;
+}
+
+export interface ApprovalDetail extends ApprovalSummary {
+  evidence: {
+    summary: string;
+    ticket: Record<string, string | null>;
+    customer: { id: string; name: string; tier: string; region: string } | null;
+    sla: Record<string, string | boolean | null> | null;
+    routing: { lane: string; queue: string; rule_id: string; reason: string } | null;
+    incidents: { kind: string; owner_queue: string; role: string }[];
+    knowledge_in_force: {
+      document_id: string;
+      version: number;
+      title: string;
+      excerpt: string;
+      content_complete: boolean;
+      effective_from: string | null;
+      effective_to: string | null;
+    }[];
+    statutory_rates_in_force: { rule_id: string; title: string; value: string }[];
+    pii_tokens: string[];
+    injection_signals: string[];
+    suggested_response: string | null;
+    suggested_response_note: string;
+  };
+  draft_text: string | null;
+  validation: { passed: boolean; validator_version: string; checks: ValidationCheck[] } | null;
+  events: { action: string; from_status: string | null; to_status: string; note: string | null; occurred_at: string }[];
+  requires_second_person: boolean;
+}
+
+export interface RevealResponse {
+  token: string;
+  entity_type: string;
+  value: string;
+  revealed_at: string;
+  retention_until: string;
+}
+
+export interface Customer {
+  customer_id: string;
+  name: string;
+  tier: string;
+  region: string;
+  monthly_fee_usd: string;
+  employees_paid: number | null;
+  ticket_count: number;
+  sla_breaches: number;
+  credits_usd: string;
 }

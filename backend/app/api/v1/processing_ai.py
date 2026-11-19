@@ -18,9 +18,10 @@ from app.models.processing import Classification, Incident, IncidentLink, Routin
 from app.models.tickets import Ticket
 from app.schemas.processing import ClassificationOut, ProcessResult, RoutingOut, TicketRouting
 from app.services import audit
+from app.services.approvals.service import open_review
 from app.services.classification.service import classify_ticket
-from app.services.routing.engine import RoutingConfig
 from app.services.routing.service import route_ticket
+from app.services.runtime_config import load_runtime_config
 
 router = APIRouter(tags=["processing"])
 
@@ -45,11 +46,14 @@ async def process_ticket(
     principal: Annotated[Principal, Depends(require(Permission.TICKETS_PROCESS))],
 ) -> ProcessResult:
     ticket = await _ticket(session, principal, ref)
-    classification = await classify_ticket(session, ticket, classifier_provider(settings), settings)
-    await session.flush()
-    decision = await route_ticket(
-        session, ticket, RoutingConfig(confidence_threshold=settings.classification_confidence_threshold)
+    routing_config, _ = await load_runtime_config(session)
+    classification = await classify_ticket(
+        session, ticket, classifier_provider(settings), settings, routing_config.confidence_threshold
     )
+    await session.flush()
+    decision = await route_ticket(session, ticket, routing_config)
+    await session.flush()
+    await open_review(session, ticket, decision)
     await audit.record(
         session, "ticket.processed", actor_user_id=principal.user.id, entity_type="ticket",
         entity_id=ticket.external_id or str(ticket.id), region=ticket.region,

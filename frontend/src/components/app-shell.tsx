@@ -18,15 +18,16 @@ interface NavItem {
 const NAV: NavItem[] = [
   { label: "Dashboard", href: "/dashboard" },
   { label: "Tickets", href: "/tickets", permission: "tickets:read" },
-  { label: "Processing monitor", phase: 5 },
+  { label: "Processing monitor", href: "/processing", permission: "tickets:read" },
+  { label: "Customers", href: "/customers", permission: "customers:read" },
   { label: "Incidents & duplicates", href: "/incidents", permission: "tickets:read" },
   { label: "Knowledge base", href: "/knowledge", permission: "knowledge:read" },
-  { label: "Review queue", phase: 4 },
+  { label: "Review queue", href: "/review", permission: "approvals:read" },
   { label: "Evaluations", phase: 6 },
   { label: "Cost analytics", phase: 6 },
   { label: "Data ingestion", href: "/ingestion", permission: "ingestion:read" },
   { label: "Audit log", href: "/audit", permission: "audit:read" },
-  { label: "Settings", phase: 5 },
+  { label: "Settings", href: "/settings", permission: "settings:read" },
 ];
 
 export function AppShell({ user, children }: { user: User; children: ReactNode }) {
