@@ -18,9 +18,9 @@ interface NavItem {
 const NAV: NavItem[] = [
   { label: "Dashboard", href: "/dashboard" },
   { label: "Tickets", href: "/tickets", permission: "tickets:read" },
-  { label: "Processing monitor", phase: 3 },
-  { label: "Incidents & duplicates", phase: 3 },
-  { label: "Knowledge base", phase: 3 },
+  { label: "Processing monitor", phase: 5 },
+  { label: "Incidents & duplicates", href: "/incidents", permission: "tickets:read" },
+  { label: "Knowledge base", href: "/knowledge", permission: "knowledge:read" },
   { label: "Review queue", phase: 4 },
   { label: "Evaluations", phase: 6 },
   { label: "Cost analytics", phase: 6 },

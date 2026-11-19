@@ -19,17 +19,28 @@ class Permission(enum.StrEnum):
     SLA_READ = "sla:read"
     INGESTION_RUN = "ingestion:run"
     INGESTION_READ = "ingestion:read"
+    KNOWLEDGE_READ = "knowledge:read"
+    KNOWLEDGE_MANAGE = "knowledge:manage"
+    INCIDENTS_MANAGE = "incidents:manage"
+    TICKETS_PROCESS = "tickets:process"
 
 
-_SUPPORT = frozenset({Permission.TICKETS_READ, Permission.CUSTOMERS_READ})
+_SUPPORT = frozenset({Permission.TICKETS_READ, Permission.CUSTOMERS_READ, Permission.KNOWLEDGE_READ})
 
 ROLE_PERMISSIONS: dict[RoleName, frozenset[Permission]] = {
     RoleName.AGENT_L1: _SUPPORT,
-    RoleName.AGENT_L2: _SUPPORT,
+    RoleName.AGENT_L2: _SUPPORT | {Permission.TICKETS_PROCESS},
     RoleName.ENGINEER_L3: _SUPPORT,
     RoleName.SUPPORT_LEAD: _SUPPORT
-    | {Permission.AUDIT_READ, Permission.SLA_READ, Permission.INGESTION_RUN, Permission.INGESTION_READ},
-    RoleName.KB_OWNER: frozenset({Permission.TICKETS_READ}),
+    | {
+        Permission.AUDIT_READ,
+        Permission.SLA_READ,
+        Permission.INGESTION_RUN,
+        Permission.INGESTION_READ,
+        Permission.INCIDENTS_MANAGE,
+        Permission.TICKETS_PROCESS,
+    },
+    RoleName.KB_OWNER: frozenset({Permission.TICKETS_READ, Permission.KNOWLEDGE_READ, Permission.KNOWLEDGE_MANAGE}),
     RoleName.DPO: frozenset({Permission.AUDIT_READ, Permission.TICKETS_READ, Permission.INGESTION_READ}),
     RoleName.FINANCE_VIEWER: frozenset({Permission.CUSTOMERS_READ, Permission.SLA_READ}),
     RoleName.ADMIN: frozenset(Permission),

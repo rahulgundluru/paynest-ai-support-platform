@@ -61,6 +61,23 @@ async def ingest(path: Path) -> int:
     return 0 if batch.status == "completed" else 1
 
 
+async def pipeline_step(command: str, source_dir: Path) -> int:
+    from app.services.deduplication.service import run_detection
+    from app.services.knowledge.ingest import index_knowledge
+    from app.services.routing.service import route_all
+
+    async with get_sessionmaker()() as session:
+        if command == "index-knowledge":
+            result = await index_knowledge(session, source_dir)
+        elif command == "detect-duplicates":
+            result = await run_detection(session)
+        else:
+            result = await route_all(session)
+        print(json.dumps(result, indent=2, default=str))
+    await get_engine().dispose()
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(prog="python -m app.cli")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -71,10 +88,15 @@ def main() -> int:
     cu.add_argument("--region", action="append", required=True, choices=[r.value for r in Region])
     ing = sub.add_parser("ingest", help="ingest the source exports (idempotent) and print the batch summary")
     ing.add_argument("--source-dir", default=None, help="defaults to DATA_SOURCE_DIR")
+    sub.add_parser("index-knowledge", help="build/refresh the knowledge base from the source mirror")
+    sub.add_parser("detect-duplicates", help="rebuild automatic resubmission and incident groupings")
+    sub.add_parser("route-all", help="record a routing decision for every ticket (baseline)")
     args = parser.parse_args()
 
     if args.command == "ingest":
         return asyncio.run(ingest(Path(args.source_dir or get_settings().data_source_dir).resolve()))
+    if args.command in ("index-knowledge", "detect-duplicates", "route-all"):
+        return asyncio.run(pipeline_step(args.command, Path(get_settings().data_source_dir).resolve()))
 
     password = os.environ.get("PAYNEST_NEW_USER_PASSWORD") or getpass.getpass("Password: ")
     if len(password) < 12:

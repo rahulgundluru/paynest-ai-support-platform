@@ -32,6 +32,18 @@ class Settings(BaseSettings):
     # Retention for vault values and raw records. ASSUMPTION pending the DPO's retention decision.
     pii_retention_days: int = 365
 
+    # Model providers. "none" = no model configured: AI steps record `unavailable` and route to people.
+    llm_provider: Literal["none", "bedrock"] = "none"
+    embedding_provider: Literal["none", "bedrock"] = "none"
+    bedrock_region: str = "ap-south-1"
+    bedrock_classifier_model_id: str | None = None  # confirm id + in-region availability before use
+    bedrock_embedding_model_id: str | None = None
+    embedding_dimensions: int = 1024
+    classification_confidence_threshold: float = 0.80
+    # Optional price configuration for cost tracking (USD per 1M tokens). Unset = cost not estimated.
+    classifier_input_usd_per_mtok: float | None = None
+    classifier_output_usd_per_mtok: float | None = None
+
     # Read-only mirror of the upstream case repository (see scripts/source_data.py).
     data_source_dir: str = Field(default="../data/source")
 

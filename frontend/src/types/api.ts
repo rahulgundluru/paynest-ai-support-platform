@@ -19,7 +19,11 @@ export type Permission =
   | "customers:read"
   | "sla:read"
   | "ingestion:run"
-  | "ingestion:read";
+  | "ingestion:read"
+  | "knowledge:read"
+  | "knowledge:manage"
+  | "incidents:manage"
+  | "tickets:process";
 
 export interface Sla {
   applicable: boolean;
@@ -148,4 +152,140 @@ export interface ReadyResponse {
 
 export interface ApiErrorBody {
   error: { code: string; message: string; request_id: string | null };
+}
+
+export interface KnowledgeDocument {
+  id: string;
+  doc_type: string;
+  title: string;
+  region: string;
+  topic: string | null;
+  owner: string | null;
+  source_file: string;
+  last_reviewed: string | null;
+  status: string;
+  version_count: number;
+  in_force_today: boolean;
+  content_complete: boolean;
+}
+
+export interface KnowledgeVersion {
+  id: string;
+  version: number;
+  content_complete: boolean;
+  effective_from: string | null;
+  effective_to: string | null;
+  validity_source: string;
+  superseded_by: string | null;
+  approval_status: string;
+  indexed_at: string | null;
+  content: string;
+}
+
+export interface KnowledgeDocumentDetail extends KnowledgeDocument {
+  metadata: Record<string, unknown>;
+  versions: KnowledgeVersion[];
+}
+
+export interface SearchHit {
+  rank: number;
+  document_id: string;
+  doc_type: string;
+  title: string;
+  version: number;
+  heading: string | null;
+  text: string;
+  content_complete: boolean;
+  effective_from: string | null;
+  effective_to: string | null;
+  validity_source: string;
+  score: number;
+}
+
+export interface SearchResponse {
+  retrieval_id: string;
+  query_redacted: string;
+  mode: string;
+  hits: SearchHit[];
+}
+
+export interface RateInForce {
+  rule_id: string;
+  topic: string;
+  title: string;
+  value: string;
+  in_force_since: string | null;
+  in_force_until: string | null;
+  source: string;
+}
+
+export interface Incident {
+  id: string;
+  kind: "resubmission" | "incident";
+  customer_id: string | null;
+  customer_name: string | null;
+  region: string | null;
+  master_external_id: string | null;
+  owner_queue: string | null;
+  category: string | null;
+  rule_id: string;
+  first_ticket_at: string;
+  declared_at: string;
+  status: string;
+  ticket_count: number;
+}
+
+export interface IncidentLink {
+  ticket_id: string;
+  external_id: string | null;
+  channel: string;
+  created_at: string;
+  subject_redacted: string | null;
+  role: string;
+  rule_id: string;
+  reason: string;
+  confidence: number;
+  active: boolean;
+  manual: boolean;
+}
+
+export interface IncidentDetail extends Incident {
+  links: IncidentLink[];
+}
+
+export interface Classification {
+  id: string;
+  status: string;
+  provider: string;
+  model: string | null;
+  prompt_version: string;
+  category: string | null;
+  subcategory: string | null;
+  intent: string | null;
+  priority: string | null;
+  language: string | null;
+  is_injection: boolean | null;
+  confidence: number | null;
+  requires_human: boolean;
+  explanation: string | null;
+  error: string | null;
+  created_at: string;
+}
+
+export interface RoutingDecision {
+  lane: string;
+  queue: string;
+  support_level: string;
+  rule_id: string;
+  rule_version: string;
+  reason: string;
+  requires_approval: boolean;
+  inputs: Record<string, unknown>;
+  decided_at: string;
+}
+
+export interface TicketRouting {
+  classification: Classification | null;
+  routing: RoutingDecision | null;
+  incidents: Incident[];
 }

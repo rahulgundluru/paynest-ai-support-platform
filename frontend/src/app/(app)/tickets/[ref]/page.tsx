@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { TicketRoutingCard } from "@/components/ticket-routing";
 import { Alert, Badge, Card, Spinner } from "@/components/ui";
 import { ApiError, apiFetch } from "@/lib/api";
 import { CATEGORY_LABELS, CHANNEL_LABELS, formatIst, humanize } from "@/lib/format";
@@ -95,7 +96,7 @@ export default function TicketDetailPage() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
-        <Card title="Routing">
+        <Card title="Queue history">
           <dl>
             <Row label="Customer's category">{t.customer_category ? CATEGORY_LABELS[t.customer_category] : "—"}</Row>
             <Row label="First queue">{t.first_queue ?? "—"}</Row>
@@ -104,7 +105,6 @@ export default function TicketDetailPage() {
             <Row label="Reopened">{t.reopen_count}</Row>
             <Row label="Status">{t.status ?? "—"}</Row>
           </dl>
-          <p className="mt-2 text-xs text-text-muted">AI classification is added in Phase 3.</p>
         </Card>
         <Card title="SLA">
           {!sla || !sla.applicable ? (
@@ -151,6 +151,8 @@ export default function TicketDetailPage() {
           )}
         </Card>
       </div>
+
+      <TicketRoutingCard ticketRef={t.external_id ?? t.id} />
 
       <Card title="Timeline">
         <ol className="space-y-2">

@@ -2,6 +2,15 @@
 
 from app.models.audit import AuditLog
 from app.models.identity import AuthSession, Region, RoleName, User, UserRegionScope, UserRole
+from app.models.knowledge import (
+    KnowledgeChunk,
+    KnowledgeDocument,
+    KnowledgeDocumentVersion,
+    RetrievalLog,
+    RetrievalResult,
+    StatutoryRule,
+)
+from app.models.processing import Classification, Incident, IncidentLink, ModelUsage, RoutingDecision
 from app.models.reference import Agent, Customer, FinanceSlaBreach, SlaTerm
 from app.models.tickets import (
     IngestionBatch,
@@ -16,6 +25,17 @@ from app.models.tickets import (
 )
 
 __all__ = [
+    "Classification",
+    "Incident",
+    "IncidentLink",
+    "KnowledgeChunk",
+    "KnowledgeDocument",
+    "KnowledgeDocumentVersion",
+    "ModelUsage",
+    "RetrievalLog",
+    "RetrievalResult",
+    "RoutingDecision",
+    "StatutoryRule",
     "Agent",
     "AuditLog",
     "AuthSession",
