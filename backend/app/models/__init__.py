@@ -12,7 +12,14 @@ from app.models.knowledge import (
     RetrievalResult,
     StatutoryRule,
 )
-from app.models.processing import Classification, Incident, IncidentLink, ModelUsage, RoutingDecision
+from app.models.processing import (
+    Classification,
+    Incident,
+    IncidentLink,
+    ModelUsage,
+    PipelineRun,
+    RoutingDecision,
+)
 from app.models.reference import Agent, Customer, FinanceSlaBreach, SlaTerm
 from app.models.settings import SystemConfiguration
 from app.models.tickets import (
@@ -42,6 +49,7 @@ __all__ = [
     "KnowledgeDocument",
     "KnowledgeDocumentVersion",
     "ModelUsage",
+    "PipelineRun",
     "RetrievalLog",
     "RetrievalResult",
     "RoutingDecision",

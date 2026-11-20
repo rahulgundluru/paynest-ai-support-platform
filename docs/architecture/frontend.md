@@ -1,6 +1,6 @@
 # Phase 5 – Frontend and analytics
 
-All screens read live API data, scoped to the signed-in user's regions. Navigation entries appear only for roles with the matching permission. Modules not built yet (Evaluations, Cost analytics) are shown as non-interactive "Phase 6" entries.
+All screens read live API data, scoped to the signed-in user's regions. Navigation entries appear only for roles with the matching permission. The Evaluations and Cost analytics screens were added in Phase 6 ([evaluation](../evaluation/README.md), [cost analysis](../cost-analysis/README.md)).
 
 | Screen | Route | Data source |
 |---|---|---|
@@ -14,6 +14,8 @@ All screens read live API data, scoped to the signed-in user's regions. Navigati
 | Data ingestion | `/ingestion` | `/processing/ingest`, `/processing/batches` |
 | Audit log | `/audit` | `/audit-logs` |
 | Settings | `/settings` | `GET` / `PATCH /settings` |
+| Evaluations | `/evaluations` | `/evaluations/gates`, `/evaluations`, `/evaluations/{run_id}`, run |
+| Cost analytics | `/analytics/cost` | `/analytics/cost`, `/analytics/model-usage` |
 
 ## Dashboard metrics
 
@@ -58,4 +60,4 @@ Model, credential and retention settings are deployment configuration and are sh
 
 - **Dates:** shown in IST. UAE local-time display is not implemented.
 - **Ticket search:** the list doesn't yet read filters from the URL, so filtered views can't be bookmarked.
-- **Browser tests:** no end-to-end browser suite yet (planned for Phase 6). The Phase 4 proxy bug showed it is needed.
+- **Browser tests:** no end-to-end browser suite yet; screens were checked by hand in the browser. The Phase 4 proxy bug showed a suite is needed.

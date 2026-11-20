@@ -177,9 +177,13 @@ async def validation_context(session: AsyncSession, ticket: Ticket, statutory: b
     )
 
 
-async def open_review(session: AsyncSession, ticket: Ticket, decision: RoutingDecision) -> Approval | None:
-    """Creates a pending review item when the routing decision requires a person. Idempotent per ticket."""
-    if not decision.requires_approval or decision.rule_id not in REVIEW_RULES:
+async def open_review(
+    session: AsyncSession, ticket: Ticket, decision: RoutingDecision, *, has_draft: bool = False
+) -> Approval | None:
+    """Creates a pending review item when the routing decision requires a person, or when an AI draft
+    exists (a person must review every AI draft before anything is sent). Idempotent per ticket."""
+    needs_person = decision.requires_approval and decision.rule_id in REVIEW_RULES
+    if not needs_person and not has_draft:
         return None
     existing = await session.scalar(
         select(Approval).where(Approval.ticket_id == ticket.id, Approval.status == "pending")

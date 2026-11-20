@@ -129,6 +129,10 @@ class Ticket(Base):
     in_payroll_window: Mapped[bool] = mapped_column(Boolean, nullable=False)
 
     ingestion_status: Mapped[str] = mapped_column(String(16), nullable=False, index=True)
+    # import = from the pinned source data (the evaluation set); app = entered through the New ticket screen.
+    origin: Mapped[str] = mapped_column(
+        String(8), nullable=False, default="import", server_default="import", index=True
+    )
     review_reasons: Mapped[list[str]] = mapped_column(JSONB, nullable=False, default=list)
     attributes: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False, default=dict)
     ingested_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())
@@ -143,6 +147,7 @@ class Ticket(Base):
         CheckConstraint(_in("customer_resolution", CUSTOMER_RESOLUTIONS), name="customer_resolution"),
         CheckConstraint("region IS NULL OR region IN ('IN', 'UAE')", name="region"),
         CheckConstraint(_in("ingestion_status", RECORD_STATUSES), name="ingestion_status"),
+        CheckConstraint("origin IN ('import', 'app')", name="origin"),
     )
 
 

@@ -31,7 +31,10 @@ export type Permission =
   | "settings:read"
   | "settings:manage"
   | "evaluations:read"
-  | "evaluations:run";
+  | "evaluations:run"
+  | "tickets:create"
+  | "ai:read"
+  | "ai:manage";
 
 export interface Sla {
   applicable: boolean;

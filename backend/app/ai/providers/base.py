@@ -7,13 +7,22 @@ text at ingestion, and this is the second, independent check at the network boun
 from __future__ import annotations
 
 from dataclasses import dataclass
+from decimal import Decimal
 from typing import Any, Protocol
 
 from app.services.pii.gate import contains_pii
 
 
 class ProviderUnavailable(RuntimeError):
-    """No provider configured, credentials missing, or the service is unreachable."""
+    """No provider configured, credentials missing, or the service is unreachable.
+
+    `code` is a short machine-readable reason (e.g. `auth_failed`, `insufficient_credits`, `timeout`,
+    `no_private_endpoint`); `usage` carries tokens/cost when the provider billed a failed call."""
+
+    def __init__(self, message: str, *, code: str = "unavailable", model: str | None = None) -> None:
+        super().__init__(message)
+        self.code = code
+        self.model = model
 
 
 class PiiLeakBlocked(RuntimeError):
@@ -27,6 +36,10 @@ class StructuredResult:
     input_tokens: int
     output_tokens: int
     latency_ms: int
+    # Cost the provider reports it charged for this call (USD). None = the provider does not report it.
+    cost_usd: Decimal | None = None
+    request_id: str | None = None
+    upstream_provider: str | None = None
 
 
 @dataclass(frozen=True)

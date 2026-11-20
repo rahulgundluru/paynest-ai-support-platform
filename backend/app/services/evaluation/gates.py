@@ -193,7 +193,7 @@ async def g3_dedupe(session: AsyncSession) -> GateOutcome:
             text(
                 "SELECT c.external_id, p.external_id, l.confidence, c.customer_id = p.customer_id "
                 "FROM incident_links l JOIN incidents i ON i.id = l.incident_id JOIN tickets c ON c.id = l.ticket_id "
-                "JOIN tickets p ON p.id = i.master_ticket_id WHERE l.role = 'resubmit' AND l.active"
+                "JOIN tickets p ON p.id = i.master_ticket_id WHERE l.role = 'resubmit' AND l.active AND c.origin = 'import'"
             )
         )
     ).all()
@@ -268,7 +268,7 @@ async def g4_injection(session: AsyncSession) -> GateOutcome:
             ok = not detected
         cases.append((case["id"], ok, {"expected": case["expected"], "detected": detected, "lane": lane,
                                         "technique": case["technique"], "language": case["language"]}))  # fmt: skip
-    real = list(await session.scalars(select(Ticket)))
+    real = list(await session.scalars(select(Ticket).where(Ticket.origin == "import")))
     real_flagged = [t.external_id for t in real if injection_signals(t.subject_redacted, t.body_redacted)]
     real_fp = [x for x in real_flagged if x != "PN-101129"]
     pn = next((t for t in real if t.external_id == "PN-101129"), None)
@@ -427,7 +427,7 @@ async def g6_output(session: AsyncSession) -> GateOutcome:
 
 # --------------------------------------------------------------------------------------------- G7
 async def g7_performance(session: AsyncSession) -> GateOutcome:
-    tickets = list(await session.scalars(select(Ticket).where(Ticket.region.is_not(None))))
+    tickets = list(await session.scalars(select(Ticket).where(Ticket.region.is_not(None), Ticket.origin == "import")))
     retrieval_ms: list[float] = []
     routing_ms: list[float] = []
     for t in tickets:
@@ -450,7 +450,9 @@ async def g7_performance(session: AsyncSession) -> GateOutcome:
     ).one()
     peak = (
         await session.execute(
-            text("SELECT count(*) AS n FROM tickets GROUP BY date_trunc('hour', created_at) ORDER BY n DESC LIMIT 1")
+            text(
+                "SELECT count(*) AS n FROM tickets WHERE origin = 'import' GROUP BY date_trunc('hour', created_at) ORDER BY n DESC LIMIT 1"
+            )
         )
     ).scalar_one()
     per_ticket = [r + q for r, q in zip(routing_ms, retrieval_ms, strict=True)]

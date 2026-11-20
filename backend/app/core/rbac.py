@@ -31,6 +31,9 @@ class Permission(enum.StrEnum):
     SETTINGS_MANAGE = "settings:manage"
     EVALUATIONS_READ = "evaluations:read"
     EVALUATIONS_RUN = "evaluations:run"
+    TICKETS_CREATE = "tickets:create"
+    AI_READ = "ai:read"
+    AI_MANAGE = "ai:manage"
 
 
 _SUPPORT = frozenset(
@@ -40,6 +43,7 @@ _SUPPORT = frozenset(
         Permission.KNOWLEDGE_READ,
         Permission.APPROVALS_READ,
         Permission.APPROVALS_EDIT,
+        Permission.TICKETS_CREATE,
     }
 )
 
@@ -59,6 +63,7 @@ ROLE_PERMISSIONS: dict[RoleName, frozenset[Permission]] = {
         Permission.SETTINGS_READ,
         Permission.EVALUATIONS_READ,
         Permission.EVALUATIONS_RUN,
+        Permission.AI_READ,
     },
     RoleName.KB_OWNER: frozenset({Permission.TICKETS_READ, Permission.KNOWLEDGE_READ, Permission.KNOWLEDGE_MANAGE}),
     RoleName.DPO: frozenset(
@@ -68,9 +73,12 @@ ROLE_PERMISSIONS: dict[RoleName, frozenset[Permission]] = {
             Permission.INGESTION_READ,
             Permission.PII_REVEAL,
             Permission.EVALUATIONS_READ,
+            Permission.AI_READ,
         }
     ),
-    RoleName.FINANCE_VIEWER: frozenset({Permission.CUSTOMERS_READ, Permission.SLA_READ, Permission.EVALUATIONS_READ}),
+    RoleName.FINANCE_VIEWER: frozenset(
+        {Permission.CUSTOMERS_READ, Permission.SLA_READ, Permission.EVALUATIONS_READ, Permission.AI_READ}
+    ),
     # Admin gets everything except reading original personal data, which is the DPO's alone.
     RoleName.ADMIN: frozenset(Permission) - {Permission.PII_REVEAL},
 }

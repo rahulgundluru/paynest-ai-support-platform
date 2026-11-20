@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import uuid
+from datetime import UTC, datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -17,9 +18,9 @@ from app.core.rbac import Permission
 from app.models.processing import Classification, Incident, IncidentLink, RoutingDecision
 from app.models.tickets import Ticket
 from app.schemas.processing import ClassificationOut, ProcessResult, RoutingOut, TicketRouting
-from app.services import audit
+from app.services import ai_config, audit
 from app.services.approvals.service import open_review
-from app.services.classification.service import classify_ticket
+from app.services.classification.service import classify_ticket, injection_signals
 from app.services.routing.service import route_ticket
 from app.services.runtime_config import load_runtime_config
 
@@ -47,8 +48,20 @@ async def process_ticket(
 ) -> ProcessResult:
     ticket = await _ticket(session, principal, ref)
     routing_config, _ = await load_runtime_config(session)
+    provider, reason = classifier_provider(settings), "no model provider configured"
+    if settings.llm_provider == "openrouter":  # model, switch and caps come from AI management
+        cfg = await ai_config.load(session, settings)
+        provider = None
+        if not (cfg.ready and cfg.classifier_model):
+            reason = "AI is off or no classification model is selected (AI management)"
+        elif injection_signals(ticket.subject_redacted, ticket.body_redacted):
+            reason = "injection screen: model not called"
+        elif blocked := await ai_config.budget_block(session, cfg, ticket.id, datetime.now(tz=UTC)):
+            reason = blocked
+        else:
+            provider = ai_config.build_provider(settings, cfg.classifier_model)
     classification = await classify_ticket(
-        session, ticket, classifier_provider(settings), settings, routing_config.confidence_threshold
+        session, ticket, provider, settings, routing_config.confidence_threshold, unavailable_reason=reason
     )
     await session.flush()
     decision = await route_ticket(session, ticket, routing_config)

@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import re
 import time
+import uuid
 from decimal import Decimal
 from typing import Literal
 
@@ -18,10 +19,14 @@ from pydantic import BaseModel, Field, ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.ai.prompts import classification as prompt
-from app.ai.providers.base import LLMProvider, PiiLeakBlocked, ProviderUnavailable
+from app.ai.providers.base import LLMProvider, PiiLeakBlocked, ProviderUnavailable, StructuredResult
 from app.core.config import Settings
 from app.models.processing import Classification, ModelUsage
 from app.models.tickets import Ticket
+
+# Failures a retry cannot fix (bad key, no credit, unknown model, no privacy-compliant endpoint).
+NON_RETRYABLE = {"auth_failed", "insufficient_credits", "model_not_found", "no_private_endpoint", "no_api_key",
+                 "bad_request"}  # fmt: skip
 
 # Rule-based layer of injection detection (defence in depth; the model's is_injection is the second layer).
 # Families, not phrases: override verbs aimed at instructions, persona switches, fake role markers,
@@ -113,12 +118,23 @@ def _cost(settings: Settings, input_tokens: int, output_tokens: int) -> Decimal 
     )
 
 
+def usage_cost(settings: Settings, result: StructuredResult) -> tuple[Decimal | None, str | None]:
+    """Provider-reported cost when available, otherwise the configured price table, otherwise unknown."""
+    if result.cost_usd is not None:
+        return result.cost_usd, "provider_reported"
+    estimated = _cost(settings, result.input_tokens, result.output_tokens)
+    return estimated, ("price_table" if estimated is not None else None)
+
+
 async def classify_ticket(
     session: AsyncSession,
     ticket: Ticket,
     provider: LLMProvider | None,
     settings: Settings,
     threshold: float | None = None,
+    *,
+    run_id: uuid.UUID | None = None,
+    unavailable_reason: str = "no model provider configured",
 ) -> Classification:
     heuristics = injection_signals(ticket.subject_redacted, ticket.body_redacted)
     base = {"ticket_id": ticket.id, "prompt_version": prompt.PROMPT_VERSION}
@@ -129,7 +145,7 @@ async def classify_ticket(
             provider="none",
             requires_human=True,
             is_injection=bool(heuristics) or None,
-            error="no model provider configured",
+            error=unavailable_reason[:200],
         )
         session.add(row)
         return row
@@ -154,30 +170,43 @@ async def classify_ticket(
             session.add(row)
             return row
         except (ProviderUnavailable, ValueError) as exc:
+            code = exc.code if isinstance(exc, ProviderUnavailable) else "invalid_output"
             session.add(
                 ModelUsage(
-                    provider=provider.name, model="unknown", operation="classify", ticket_id=ticket.id,
-                    latency_ms=int((time.perf_counter() - started) * 1000), success=False,
+                    provider=provider.name, model=getattr(provider, "model", None) or "unknown", operation="classify",
+                    ticket_id=ticket.id, pipeline_run_id=run_id, prompt_version=prompt.PROMPT_VERSION,
+                    latency_ms=int((time.perf_counter() - started) * 1000), success=False, error=code[:40],
                 )
             )  # fmt: skip
-            last_error = type(exc).__name__
+            last_error = code if isinstance(exc, ProviderUnavailable) else type(exc).__name__
+            if isinstance(exc, ProviderUnavailable) and code in NON_RETRYABLE:
+                break
             continue
+        cost, cost_source = usage_cost(settings, result)
+        try:
+            out = ClassificationOutput.model_validate(result.data)
+        except ValidationError:
+            out = None
         session.add(
             ModelUsage(
                 provider=provider.name,
                 model=result.model,
                 operation="classify",
                 ticket_id=ticket.id,
+                pipeline_run_id=run_id,
+                prompt_version=prompt.PROMPT_VERSION,
                 input_tokens=result.input_tokens,
                 output_tokens=result.output_tokens,
                 latency_ms=result.latency_ms,
-                estimated_cost_usd=_cost(settings, result.input_tokens, result.output_tokens),
-                success=True,
+                estimated_cost_usd=cost,
+                cost_source=cost_source,
+                success=out is not None,
+                error=None if out is not None else "schema_validation_failed",
+                request_id=result.request_id,
+                upstream_provider=result.upstream_provider,
             )
         )
-        try:
-            out = ClassificationOutput.model_validate(result.data)
-        except ValidationError:
+        if out is None:
             last_error = "schema_validation_failed"
             continue
         requires_human = (

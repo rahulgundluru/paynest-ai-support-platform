@@ -1,0 +1,6332 @@
+{
+  "components": {
+    "schemas": {
+      "ApprovalDetail": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "decided_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decided At"
+          },
+          "draft_source": {
+            "title": "Draft Source",
+            "type": "string"
+          },
+          "draft_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Draft Text"
+          },
+          "escalation_reason": {
+            "title": "Escalation Reason",
+            "type": "string"
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/ApprovalEventOut"
+            },
+            "title": "Events",
+            "type": "array"
+          },
+          "evidence": {
+            "additionalProperties": true,
+            "title": "Evidence",
+            "type": "object"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "lane": {
+            "title": "Lane",
+            "type": "string"
+          },
+          "queue": {
+            "title": "Queue",
+            "type": "string"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region"
+          },
+          "requires_second_person": {
+            "title": "Requires Second Person",
+            "type": "boolean"
+          },
+          "rule_id": {
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "sla_breached": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sla Breached"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "summary": {
+            "default": "",
+            "title": "Summary",
+            "type": "string"
+          },
+          "ticket_external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ticket External Id"
+          },
+          "ticket_id": {
+            "format": "uuid",
+            "title": "Ticket Id",
+            "type": "string"
+          },
+          "validation": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Validation"
+          },
+          "validation_passed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Validation Passed"
+          }
+        },
+        "required": [
+          "id",
+          "ticket_id",
+          "region",
+          "status",
+          "lane",
+          "queue",
+          "rule_id",
+          "escalation_reason",
+          "draft_source",
+          "created_at",
+          "decided_at",
+          "evidence",
+          "draft_text",
+          "validation",
+          "events",
+          "requires_second_person"
+        ],
+        "title": "ApprovalDetail",
+        "type": "object"
+      },
+      "ApprovalEventOut": {
+        "properties": {
+          "action": {
+            "title": "Action",
+            "type": "string"
+          },
+          "actor_user_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actor User Id"
+          },
+          "details": {
+            "additionalProperties": true,
+            "title": "Details",
+            "type": "object"
+          },
+          "from_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "From Status"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "occurred_at": {
+            "format": "date-time",
+            "title": "Occurred At",
+            "type": "string"
+          },
+          "to_status": {
+            "title": "To Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "action",
+          "from_status",
+          "to_status",
+          "actor_user_id",
+          "note",
+          "details",
+          "occurred_at"
+        ],
+        "title": "ApprovalEventOut",
+        "type": "object"
+      },
+      "ApprovalSummary": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "decided_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decided At"
+          },
+          "draft_source": {
+            "title": "Draft Source",
+            "type": "string"
+          },
+          "escalation_reason": {
+            "title": "Escalation Reason",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "lane": {
+            "title": "Lane",
+            "type": "string"
+          },
+          "queue": {
+            "title": "Queue",
+            "type": "string"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region"
+          },
+          "rule_id": {
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "sla_breached": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sla Breached"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "summary": {
+            "default": "",
+            "title": "Summary",
+            "type": "string"
+          },
+          "ticket_external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ticket External Id"
+          },
+          "ticket_id": {
+            "format": "uuid",
+            "title": "Ticket Id",
+            "type": "string"
+          },
+          "validation_passed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Validation Passed"
+          }
+        },
+        "required": [
+          "id",
+          "ticket_id",
+          "region",
+          "status",
+          "lane",
+          "queue",
+          "rule_id",
+          "escalation_reason",
+          "draft_source",
+          "created_at",
+          "decided_at"
+        ],
+        "title": "ApprovalSummary",
+        "type": "object"
+      },
+      "AuditLogOut": {
+        "properties": {
+          "action": {
+            "title": "Action",
+            "type": "string"
+          },
+          "actor_user_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actor User Id"
+          },
+          "details": {
+            "additionalProperties": true,
+            "title": "Details",
+            "type": "object"
+          },
+          "entity_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entity Id"
+          },
+          "entity_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entity Type"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "occurred_at": {
+            "format": "date-time",
+            "title": "Occurred At",
+            "type": "string"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region"
+          },
+          "request_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request Id"
+          }
+        },
+        "required": [
+          "id",
+          "occurred_at",
+          "actor_user_id",
+          "action",
+          "entity_type",
+          "entity_id",
+          "region",
+          "request_id",
+          "details"
+        ],
+        "title": "AuditLogOut",
+        "type": "object"
+      },
+      "ChunkOut": {
+        "properties": {
+          "has_embedding": {
+            "title": "Has Embedding",
+            "type": "boolean"
+          },
+          "heading": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Heading"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "seq": {
+            "title": "Seq",
+            "type": "integer"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "seq",
+          "heading",
+          "text",
+          "has_embedding"
+        ],
+        "title": "ChunkOut",
+        "type": "object"
+      },
+      "ClassificationOut": {
+        "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "explanation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Explanation"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "intent": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Intent"
+          },
+          "is_injection": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Injection"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model"
+          },
+          "priority": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Priority"
+          },
+          "prompt_version": {
+            "title": "Prompt Version",
+            "type": "string"
+          },
+          "provider": {
+            "title": "Provider",
+            "type": "string"
+          },
+          "requires_human": {
+            "title": "Requires Human",
+            "type": "boolean"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "subcategory": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subcategory"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "provider",
+          "model",
+          "prompt_version",
+          "category",
+          "subcategory",
+          "intent",
+          "priority",
+          "language",
+          "is_injection",
+          "confidence",
+          "requires_human",
+          "explanation",
+          "error",
+          "created_at"
+        ],
+        "title": "ClassificationOut",
+        "type": "object"
+      },
+      "CustomerDetail": {
+        "properties": {
+          "credits_usd": {
+            "default": "0",
+            "title": "Credits Usd",
+            "type": "string"
+          },
+          "customer_id": {
+            "title": "Customer Id",
+            "type": "string"
+          },
+          "employees_paid": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Employees Paid"
+          },
+          "monthly_fee_usd": {
+            "title": "Monthly Fee Usd",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "region": {
+            "title": "Region",
+            "type": "string"
+          },
+          "sla_breaches": {
+            "default": 0,
+            "title": "Sla Breaches",
+            "type": "integer"
+          },
+          "sla_terms": {
+            "items": {
+              "$ref": "#/components/schemas/SlaTermOut"
+            },
+            "title": "Sla Terms",
+            "type": "array"
+          },
+          "ticket_count": {
+            "default": 0,
+            "title": "Ticket Count",
+            "type": "integer"
+          },
+          "tier": {
+            "title": "Tier",
+            "type": "string"
+          }
+        },
+        "required": [
+          "customer_id",
+          "name",
+          "tier",
+          "region",
+          "monthly_fee_usd",
+          "employees_paid",
+          "sla_terms"
+        ],
+        "title": "CustomerDetail",
+        "type": "object"
+      },
+      "CustomerOut": {
+        "properties": {
+          "credits_usd": {
+            "default": "0",
+            "title": "Credits Usd",
+            "type": "string"
+          },
+          "customer_id": {
+            "title": "Customer Id",
+            "type": "string"
+          },
+          "employees_paid": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Employees Paid"
+          },
+          "monthly_fee_usd": {
+            "title": "Monthly Fee Usd",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "region": {
+            "title": "Region",
+            "type": "string"
+          },
+          "sla_breaches": {
+            "default": 0,
+            "title": "Sla Breaches",
+            "type": "integer"
+          },
+          "ticket_count": {
+            "default": 0,
+            "title": "Ticket Count",
+            "type": "integer"
+          },
+          "tier": {
+            "title": "Tier",
+            "type": "string"
+          }
+        },
+        "required": [
+          "customer_id",
+          "name",
+          "tier",
+          "region",
+          "monthly_fee_usd",
+          "employees_paid"
+        ],
+        "title": "CustomerOut",
+        "type": "object"
+      },
+      "DecisionRequest": {
+        "properties": {
+          "action": {
+            "enum": [
+              "approve",
+              "reject",
+              "escalate",
+              "reassign",
+              "resolve"
+            ],
+            "title": "Action",
+            "type": "string"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "target": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target"
+          }
+        },
+        "required": [
+          "action"
+        ],
+        "title": "DecisionRequest",
+        "type": "object"
+      },
+      "DocumentDetail": {
+        "properties": {
+          "content_complete": {
+            "default": false,
+            "title": "Content Complete",
+            "type": "boolean"
+          },
+          "doc_type": {
+            "title": "Doc Type",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "in_force_today": {
+            "default": false,
+            "title": "In Force Today",
+            "type": "boolean"
+          },
+          "last_reviewed": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Reviewed"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "title": "Metadata",
+            "type": "object"
+          },
+          "owner": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner"
+          },
+          "region": {
+            "title": "Region",
+            "type": "string"
+          },
+          "source_file": {
+            "title": "Source File",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "topic": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Topic"
+          },
+          "version_count": {
+            "default": 0,
+            "title": "Version Count",
+            "type": "integer"
+          },
+          "versions": {
+            "items": {
+              "$ref": "#/components/schemas/VersionOut"
+            },
+            "title": "Versions",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "doc_type",
+          "title",
+          "region",
+          "topic",
+          "owner",
+          "source_file",
+          "last_reviewed",
+          "status",
+          "metadata",
+          "versions"
+        ],
+        "title": "DocumentDetail",
+        "type": "object"
+      },
+      "DocumentOut": {
+        "properties": {
+          "content_complete": {
+            "default": false,
+            "title": "Content Complete",
+            "type": "boolean"
+          },
+          "doc_type": {
+            "title": "Doc Type",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "in_force_today": {
+            "default": false,
+            "title": "In Force Today",
+            "type": "boolean"
+          },
+          "last_reviewed": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Reviewed"
+          },
+          "owner": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner"
+          },
+          "region": {
+            "title": "Region",
+            "type": "string"
+          },
+          "source_file": {
+            "title": "Source File",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "topic": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Topic"
+          },
+          "version_count": {
+            "default": 0,
+            "title": "Version Count",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "doc_type",
+          "title",
+          "region",
+          "topic",
+          "owner",
+          "source_file",
+          "last_reviewed",
+          "status"
+        ],
+        "title": "DocumentOut",
+        "type": "object"
+      },
+      "DraftRequest": {
+        "properties": {
+          "text": {
+            "maxLength": 5000,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "DraftRequest",
+        "type": "object"
+      },
+      "EventOut": {
+        "properties": {
+          "actor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actor"
+          },
+          "data": {
+            "additionalProperties": true,
+            "title": "Data",
+            "type": "object"
+          },
+          "event_type": {
+            "title": "Event Type",
+            "type": "string"
+          },
+          "occurred_at": {
+            "format": "date-time",
+            "title": "Occurred At",
+            "type": "string"
+          },
+          "seq": {
+            "title": "Seq",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "seq",
+          "event_type",
+          "occurred_at",
+          "actor",
+          "data"
+        ],
+        "title": "EventOut",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "IncidentDetail": {
+        "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "customer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customer Id"
+          },
+          "customer_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customer Name"
+          },
+          "declared_at": {
+            "format": "date-time",
+            "title": "Declared At",
+            "type": "string"
+          },
+          "first_ticket_at": {
+            "format": "date-time",
+            "title": "First Ticket At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "links": {
+            "items": {
+              "$ref": "#/components/schemas/IncidentLinkOut"
+            },
+            "title": "Links",
+            "type": "array"
+          },
+          "master_external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Master External Id"
+          },
+          "owner_queue": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Queue"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region"
+          },
+          "rule_id": {
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "ticket_count": {
+            "title": "Ticket Count",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "customer_id",
+          "customer_name",
+          "region",
+          "master_external_id",
+          "owner_queue",
+          "category",
+          "rule_id",
+          "first_ticket_at",
+          "declared_at",
+          "status",
+          "ticket_count",
+          "links"
+        ],
+        "title": "IncidentDetail",
+        "type": "object"
+      },
+      "IncidentLinkOut": {
+        "properties": {
+          "active": {
+            "title": "Active",
+            "type": "boolean"
+          },
+          "channel": {
+            "title": "Channel",
+            "type": "string"
+          },
+          "confidence": {
+            "title": "Confidence",
+            "type": "number"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "External Id"
+          },
+          "manual": {
+            "title": "Manual",
+            "type": "boolean"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "role": {
+            "title": "Role",
+            "type": "string"
+          },
+          "rule_id": {
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "subject_redacted": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject Redacted"
+          },
+          "ticket_id": {
+            "format": "uuid",
+            "title": "Ticket Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ticket_id",
+          "external_id",
+          "channel",
+          "created_at",
+          "subject_redacted",
+          "role",
+          "rule_id",
+          "reason",
+          "confidence",
+          "active",
+          "manual"
+        ],
+        "title": "IncidentLinkOut",
+        "type": "object"
+      },
+      "IncidentOut": {
+        "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "customer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customer Id"
+          },
+          "customer_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customer Name"
+          },
+          "declared_at": {
+            "format": "date-time",
+            "title": "Declared At",
+            "type": "string"
+          },
+          "first_ticket_at": {
+            "format": "date-time",
+            "title": "First Ticket At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "master_external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Master External Id"
+          },
+          "owner_queue": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Queue"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region"
+          },
+          "rule_id": {
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "ticket_count": {
+            "title": "Ticket Count",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "customer_id",
+          "customer_name",
+          "region",
+          "master_external_id",
+          "owner_queue",
+          "category",
+          "rule_id",
+          "first_ticket_at",
+          "declared_at",
+          "status",
+          "ticket_count"
+        ],
+        "title": "IncidentOut",
+        "type": "object"
+      },
+      "IngestionBatchOut": {
+        "properties": {
+          "finished_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "source_commit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Commit"
+          },
+          "started_at": {
+            "format": "date-time",
+            "title": "Started At",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "summary": {
+            "additionalProperties": true,
+            "title": "Summary",
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "started_at",
+          "finished_at",
+          "status",
+          "source_commit",
+          "summary"
+        ],
+        "title": "IngestionBatchOut",
+        "type": "object"
+      },
+      "LinkRequest": {
+        "properties": {
+          "ticket_ref": {
+            "maxLength": 40,
+            "minLength": 1,
+            "title": "Ticket Ref",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ticket_ref"
+        ],
+        "title": "LinkRequest",
+        "type": "object"
+      },
+      "LoginRequest": {
+        "properties": {
+          "email": {
+            "maxLength": 320,
+            "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$",
+            "title": "Email",
+            "type": "string"
+          },
+          "password": {
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Password",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "LoginRequest",
+        "type": "object"
+      },
+      "LoginResponse": {
+        "properties": {
+          "access_token": {
+            "title": "Access Token",
+            "type": "string"
+          },
+          "expires_at": {
+            "format": "date-time",
+            "title": "Expires At",
+            "type": "string"
+          },
+          "token_type": {
+            "default": "bearer",
+            "title": "Token Type",
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserOut"
+          }
+        },
+        "required": [
+          "access_token",
+          "expires_at",
+          "user"
+        ],
+        "title": "LoginResponse",
+        "type": "object"
+      },
+      "MemoryOut": {
+        "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "cited_versions": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Cited Versions",
+            "type": "array"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "customer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customer Id"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region"
+          },
+          "resolution_text": {
+            "title": "Resolution Text",
+            "type": "string"
+          },
+          "ticket_id": {
+            "format": "uuid",
+            "title": "Ticket Id",
+            "type": "string"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid Until"
+          }
+        },
+        "required": [
+          "id",
+          "ticket_id",
+          "customer_id",
+          "region",
+          "category",
+          "resolution_text",
+          "cited_versions",
+          "valid_until",
+          "created_at"
+        ],
+        "title": "MemoryOut",
+        "type": "object"
+      },
+      "MessageOut": {
+        "properties": {
+          "author_type": {
+            "title": "Author Type",
+            "type": "string"
+          },
+          "body_redacted": {
+            "title": "Body Redacted",
+            "type": "string"
+          },
+          "sent_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sent At"
+          },
+          "seq": {
+            "title": "Seq",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "seq",
+          "author_type",
+          "sent_at",
+          "body_redacted"
+        ],
+        "title": "MessageOut",
+        "type": "object"
+      },
+      "NormalizationOut": {
+        "properties": {
+          "field": {
+            "title": "Field",
+            "type": "string"
+          },
+          "normalized_value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Normalized Value"
+          },
+          "original_value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original Value"
+          },
+          "rule": {
+            "title": "Rule",
+            "type": "string"
+          }
+        },
+        "required": [
+          "field",
+          "original_value",
+          "normalized_value",
+          "rule"
+        ],
+        "title": "NormalizationOut",
+        "type": "object"
+      },
+      "Page_ApprovalSummary_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ApprovalSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "minimum": 1.0,
+            "title": "Page",
+            "type": "integer"
+          },
+          "page_size": {
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Page Size",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "title": "Page[ApprovalSummary]",
+        "type": "object"
+      },
+      "Page_AuditLogOut_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AuditLogOut"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "minimum": 1.0,
+            "title": "Page",
+            "type": "integer"
+          },
+          "page_size": {
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Page Size",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "title": "Page[AuditLogOut]",
+        "type": "object"
+      },
+      "Page_CustomerOut_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/CustomerOut"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "minimum": 1.0,
+            "title": "Page",
+            "type": "integer"
+          },
+          "page_size": {
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Page Size",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "title": "Page[CustomerOut]",
+        "type": "object"
+      },
+      "Page_DocumentOut_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DocumentOut"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "minimum": 1.0,
+            "title": "Page",
+            "type": "integer"
+          },
+          "page_size": {
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Page Size",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "title": "Page[DocumentOut]",
+        "type": "object"
+      },
+      "Page_IncidentOut_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/IncidentOut"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "minimum": 1.0,
+            "title": "Page",
+            "type": "integer"
+          },
+          "page_size": {
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Page Size",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "title": "Page[IncidentOut]",
+        "type": "object"
+      },
+      "Page_IngestionBatchOut_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/IngestionBatchOut"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "minimum": 1.0,
+            "title": "Page",
+            "type": "integer"
+          },
+          "page_size": {
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Page Size",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "title": "Page[IngestionBatchOut]",
+        "type": "object"
+      },
+      "Page_MemoryOut_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/MemoryOut"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "minimum": 1.0,
+            "title": "Page",
+            "type": "integer"
+          },
+          "page_size": {
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Page Size",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "title": "Page[MemoryOut]",
+        "type": "object"
+      },
+      "Page_TicketSummary_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/TicketSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "minimum": 1.0,
+            "title": "Page",
+            "type": "integer"
+          },
+          "page_size": {
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Page Size",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "title": "Page[TicketSummary]",
+        "type": "object"
+      },
+      "Page_dict_str__Any__": {
+        "properties": {
+          "items": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "minimum": 1.0,
+            "title": "Page",
+            "type": "integer"
+          },
+          "page_size": {
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Page Size",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "title": "Page[dict[str, Any]]",
+        "type": "object"
+      },
+      "Permission": {
+        "enum": [
+          "audit:read",
+          "users:manage",
+          "tickets:read",
+          "customers:read",
+          "sla:read",
+          "ingestion:run",
+          "ingestion:read",
+          "knowledge:read",
+          "knowledge:manage",
+          "incidents:manage",
+          "tickets:process",
+          "approvals:read",
+          "approvals:edit",
+          "approvals:decide",
+          "pii:reveal",
+          "settings:read",
+          "settings:manage",
+          "evaluations:read",
+          "evaluations:run"
+        ],
+        "title": "Permission",
+        "type": "string"
+      },
+      "PiiDetectionOut": {
+        "properties": {
+          "checksum_valid": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Checksum Valid"
+          },
+          "confidence": {
+            "title": "Confidence",
+            "type": "number"
+          },
+          "entity_type": {
+            "title": "Entity Type",
+            "type": "string"
+          },
+          "field": {
+            "title": "Field",
+            "type": "string"
+          },
+          "method": {
+            "title": "Method",
+            "type": "string"
+          },
+          "token": {
+            "title": "Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "field",
+          "entity_type",
+          "token",
+          "method",
+          "confidence",
+          "checksum_valid"
+        ],
+        "title": "PiiDetectionOut",
+        "type": "object"
+      },
+      "ProcessResult": {
+        "properties": {
+          "classification": {
+            "$ref": "#/components/schemas/ClassificationOut"
+          },
+          "routing": {
+            "$ref": "#/components/schemas/RoutingOut"
+          }
+        },
+        "required": [
+          "classification",
+          "routing"
+        ],
+        "title": "ProcessResult",
+        "type": "object"
+      },
+      "RateOut": {
+        "properties": {
+          "in_force_since": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "In Force Since"
+          },
+          "in_force_until": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "In Force Until"
+          },
+          "rule_id": {
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "topic": {
+            "title": "Topic",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "rule_id",
+          "topic",
+          "title",
+          "value",
+          "in_force_since",
+          "in_force_until",
+          "source"
+        ],
+        "title": "RateOut",
+        "type": "object"
+      },
+      "Reconciliation": {
+        "properties": {
+          "engine_breaches_not_in_finance_list": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Engine Breaches Not In Finance List",
+            "type": "array"
+          },
+          "engine_total_for_finance_rows_usd": {
+            "title": "Engine Total For Finance Rows Usd",
+            "type": "string"
+          },
+          "finance_rows": {
+            "title": "Finance Rows",
+            "type": "integer"
+          },
+          "finance_total_usd": {
+            "title": "Finance Total Usd",
+            "type": "string"
+          },
+          "matched": {
+            "title": "Matched",
+            "type": "integer"
+          },
+          "mismatched": {
+            "title": "Mismatched",
+            "type": "integer"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/ReconciliationRow"
+            },
+            "title": "Rows",
+            "type": "array"
+          }
+        },
+        "required": [
+          "finance_rows",
+          "matched",
+          "mismatched",
+          "finance_total_usd",
+          "engine_total_for_finance_rows_usd",
+          "engine_breaches_not_in_finance_list",
+          "rows"
+        ],
+        "title": "Reconciliation",
+        "type": "object"
+      },
+      "ReconciliationRow": {
+        "properties": {
+          "breach_id": {
+            "title": "Breach Id",
+            "type": "string"
+          },
+          "engine_credit_usd": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engine Credit Usd"
+          },
+          "engine_resolution_h": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engine Resolution H"
+          },
+          "finance_actual_h": {
+            "title": "Finance Actual H",
+            "type": "string"
+          },
+          "finance_credit_usd": {
+            "title": "Finance Credit Usd",
+            "type": "string"
+          },
+          "matches": {
+            "title": "Matches",
+            "type": "boolean"
+          },
+          "ticket_external_id": {
+            "title": "Ticket External Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "breach_id",
+          "ticket_external_id",
+          "finance_credit_usd",
+          "engine_credit_usd",
+          "finance_actual_h",
+          "engine_resolution_h",
+          "matches"
+        ],
+        "title": "ReconciliationRow",
+        "type": "object"
+      },
+      "Region": {
+        "enum": [
+          "IN",
+          "UAE"
+        ],
+        "title": "Region",
+        "type": "string"
+      },
+      "RevealRequest": {
+        "properties": {
+          "reason": {
+            "maxLength": 500,
+            "minLength": 10,
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason"
+        ],
+        "title": "RevealRequest",
+        "type": "object"
+      },
+      "RevealResponse": {
+        "properties": {
+          "entity_type": {
+            "title": "Entity Type",
+            "type": "string"
+          },
+          "retention_until": {
+            "format": "date-time",
+            "title": "Retention Until",
+            "type": "string"
+          },
+          "revealed_at": {
+            "format": "date-time",
+            "title": "Revealed At",
+            "type": "string"
+          },
+          "token": {
+            "title": "Token",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "token",
+          "entity_type",
+          "value",
+          "revealed_at",
+          "retention_until"
+        ],
+        "title": "RevealResponse",
+        "type": "object"
+      },
+      "RoleName": {
+        "enum": [
+          "agent_l1",
+          "agent_l2",
+          "engineer_l3",
+          "support_lead",
+          "kb_owner",
+          "dpo",
+          "finance_viewer",
+          "admin"
+        ],
+        "title": "RoleName",
+        "type": "string"
+      },
+      "RoutingOut": {
+        "properties": {
+          "decided_at": {
+            "format": "date-time",
+            "title": "Decided At",
+            "type": "string"
+          },
+          "inputs": {
+            "additionalProperties": true,
+            "title": "Inputs",
+            "type": "object"
+          },
+          "lane": {
+            "title": "Lane",
+            "type": "string"
+          },
+          "queue": {
+            "title": "Queue",
+            "type": "string"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "requires_approval": {
+            "title": "Requires Approval",
+            "type": "boolean"
+          },
+          "rule_id": {
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "rule_version": {
+            "title": "Rule Version",
+            "type": "string"
+          },
+          "support_level": {
+            "title": "Support Level",
+            "type": "string"
+          }
+        },
+        "required": [
+          "lane",
+          "queue",
+          "support_level",
+          "rule_id",
+          "rule_version",
+          "reason",
+          "requires_approval",
+          "inputs",
+          "decided_at"
+        ],
+        "title": "RoutingOut",
+        "type": "object"
+      },
+      "RunRequest": {
+        "properties": {
+          "gates": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Gates",
+            "type": "array"
+          }
+        },
+        "title": "RunRequest",
+        "type": "object"
+      },
+      "SearchHit": {
+        "properties": {
+          "content_complete": {
+            "title": "Content Complete",
+            "type": "boolean"
+          },
+          "doc_type": {
+            "title": "Doc Type",
+            "type": "string"
+          },
+          "document_id": {
+            "title": "Document Id",
+            "type": "string"
+          },
+          "effective_from": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective From"
+          },
+          "effective_to": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective To"
+          },
+          "heading": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Heading"
+          },
+          "rank": {
+            "title": "Rank",
+            "type": "integer"
+          },
+          "score": {
+            "title": "Score",
+            "type": "number"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "validity_source": {
+            "title": "Validity Source",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "rank",
+          "document_id",
+          "doc_type",
+          "title",
+          "version",
+          "heading",
+          "text",
+          "content_complete",
+          "effective_from",
+          "effective_to",
+          "validity_source",
+          "score"
+        ],
+        "title": "SearchHit",
+        "type": "object"
+      },
+      "SearchRequest": {
+        "properties": {
+          "as_of": {
+            "format": "date",
+            "title": "As Of",
+            "type": "string"
+          },
+          "doc_types": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Doc Types"
+          },
+          "limit": {
+            "default": 5,
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "type": "integer"
+          },
+          "query": {
+            "maxLength": 2000,
+            "minLength": 2,
+            "title": "Query",
+            "type": "string"
+          },
+          "region": {
+            "pattern": "^(IN|UAE)$",
+            "title": "Region",
+            "type": "string"
+          }
+        },
+        "required": [
+          "query",
+          "region",
+          "as_of"
+        ],
+        "title": "SearchRequest",
+        "type": "object"
+      },
+      "SearchResponse": {
+        "properties": {
+          "hits": {
+            "items": {
+              "$ref": "#/components/schemas/SearchHit"
+            },
+            "title": "Hits",
+            "type": "array"
+          },
+          "mode": {
+            "title": "Mode",
+            "type": "string"
+          },
+          "query_redacted": {
+            "title": "Query Redacted",
+            "type": "string"
+          },
+          "retrieval_id": {
+            "format": "uuid",
+            "title": "Retrieval Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "retrieval_id",
+          "query_redacted",
+          "mode",
+          "hits"
+        ],
+        "title": "SearchResponse",
+        "type": "object"
+      },
+      "SlaOut": {
+        "properties": {
+          "applicable": {
+            "title": "Applicable",
+            "type": "boolean"
+          },
+          "credit_pct": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Credit Pct"
+          },
+          "credit_usd": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Credit Usd"
+          },
+          "first_response_breached": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Response Breached"
+          },
+          "first_response_due_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Response Due At"
+          },
+          "first_response_hours": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Response Hours"
+          },
+          "first_response_target_h": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Response Target H"
+          },
+          "not_applicable_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Not Applicable Reason"
+          },
+          "priority": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Priority"
+          },
+          "resolution_breached": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resolution Breached"
+          },
+          "resolution_due_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resolution Due At"
+          },
+          "resolution_hours": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resolution Hours"
+          },
+          "resolution_target_h": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resolution Target H"
+          },
+          "rule_version": {
+            "title": "Rule Version",
+            "type": "string"
+          },
+          "severity_multiplier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Severity Multiplier"
+          },
+          "template_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Template Version"
+          },
+          "tier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tier"
+          }
+        },
+        "required": [
+          "applicable",
+          "not_applicable_reason",
+          "template_version",
+          "tier",
+          "priority",
+          "first_response_target_h",
+          "resolution_target_h",
+          "first_response_due_at",
+          "resolution_due_at",
+          "first_response_hours",
+          "resolution_hours",
+          "first_response_breached",
+          "resolution_breached",
+          "severity_multiplier",
+          "credit_pct",
+          "credit_usd",
+          "rule_version"
+        ],
+        "title": "SlaOut",
+        "type": "object"
+      },
+      "SlaTermOut": {
+        "properties": {
+          "credit_pct": {
+            "title": "Credit Pct",
+            "type": "string"
+          },
+          "first_response_h": {
+            "title": "First Response H",
+            "type": "string"
+          },
+          "priority": {
+            "title": "Priority",
+            "type": "string"
+          },
+          "resolution_h": {
+            "title": "Resolution H",
+            "type": "string"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "template_version": {
+            "title": "Template Version",
+            "type": "string"
+          },
+          "tier": {
+            "title": "Tier",
+            "type": "string"
+          }
+        },
+        "required": [
+          "template_version",
+          "tier",
+          "priority",
+          "first_response_h",
+          "resolution_h",
+          "credit_pct",
+          "source"
+        ],
+        "title": "SlaTermOut",
+        "type": "object"
+      },
+      "TicketDetail": {
+        "properties": {
+          "attributes": {
+            "additionalProperties": true,
+            "title": "Attributes",
+            "type": "object"
+          },
+          "body_redacted": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Body Redacted"
+          },
+          "channel": {
+            "title": "Channel",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "customer_category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customer Category"
+          },
+          "customer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customer Id"
+          },
+          "customer_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customer Name"
+          },
+          "customer_resolution": {
+            "title": "Customer Resolution",
+            "type": "string"
+          },
+          "customer_tier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customer Tier"
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/EventOut"
+            },
+            "title": "Events",
+            "type": "array"
+          },
+          "external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "External Id"
+          },
+          "final_category_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Final Category Label"
+          },
+          "final_queue": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Final Queue"
+          },
+          "first_queue": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Queue"
+          },
+          "first_response_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Response At"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "in_payroll_window": {
+            "title": "In Payroll Window",
+            "type": "boolean"
+          },
+          "ingestion_status": {
+            "title": "Ingestion Status",
+            "type": "string"
+          },
+          "language_hint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language Hint"
+          },
+          "messages": {
+            "items": {
+              "$ref": "#/components/schemas/MessageOut"
+            },
+            "title": "Messages",
+            "type": "array"
+          },
+          "normalization": {
+            "items": {
+              "$ref": "#/components/schemas/NormalizationOut"
+            },
+            "title": "Normalization",
+            "type": "array"
+          },
+          "partner_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Partner Id"
+          },
+          "pii_detections": {
+            "items": {
+              "$ref": "#/components/schemas/PiiDetectionOut"
+            },
+            "title": "Pii Detections",
+            "type": "array"
+          },
+          "pii_entity_count": {
+            "default": 0,
+            "title": "Pii Entity Count",
+            "type": "integer"
+          },
+          "priority": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Priority"
+          },
+          "reassignment_count": {
+            "title": "Reassignment Count",
+            "type": "integer"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region"
+          },
+          "region_source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Source"
+          },
+          "reopen_count": {
+            "title": "Reopen Count",
+            "type": "integer"
+          },
+          "resolved_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resolved At"
+          },
+          "review_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Review Reasons",
+            "type": "array"
+          },
+          "sla": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SlaOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sla_resolution_breached": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sla Resolution Breached"
+          },
+          "source_file": {
+            "title": "Source File",
+            "type": "string"
+          },
+          "source_record_index": {
+            "title": "Source Record Index",
+            "type": "integer"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "subject_redacted": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject Redacted"
+          }
+        },
+        "required": [
+          "id",
+          "external_id",
+          "channel",
+          "customer_id",
+          "region",
+          "subject_redacted",
+          "priority",
+          "customer_category",
+          "first_queue",
+          "final_queue",
+          "status",
+          "created_at",
+          "reassignment_count",
+          "reopen_count",
+          "in_payroll_window",
+          "ingestion_status",
+          "customer_resolution",
+          "region_source",
+          "partner_id",
+          "body_redacted",
+          "language_hint",
+          "final_category_label",
+          "first_response_at",
+          "resolved_at",
+          "review_reasons",
+          "attributes",
+          "source_file",
+          "source_record_index",
+          "messages",
+          "events",
+          "pii_detections",
+          "normalization",
+          "sla"
+        ],
+        "title": "TicketDetail",
+        "type": "object"
+      },
+      "TicketRouting": {
+        "properties": {
+          "classification": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClassificationOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "incidents": {
+            "items": {
+              "$ref": "#/components/schemas/IncidentOut"
+            },
+            "title": "Incidents",
+            "type": "array"
+          },
+          "routing": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RoutingOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "classification",
+          "routing",
+          "incidents"
+        ],
+        "title": "TicketRouting",
+        "type": "object"
+      },
+      "TicketSummary": {
+        "properties": {
+          "channel": {
+            "title": "Channel",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "customer_category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customer Category"
+          },
+          "customer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customer Id"
+          },
+          "customer_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customer Name"
+          },
+          "customer_tier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customer Tier"
+          },
+          "external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "External Id"
+          },
+          "final_queue": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Final Queue"
+          },
+          "first_queue": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Queue"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "in_payroll_window": {
+            "title": "In Payroll Window",
+            "type": "boolean"
+          },
+          "ingestion_status": {
+            "title": "Ingestion Status",
+            "type": "string"
+          },
+          "pii_entity_count": {
+            "default": 0,
+            "title": "Pii Entity Count",
+            "type": "integer"
+          },
+          "priority": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Priority"
+          },
+          "reassignment_count": {
+            "title": "Reassignment Count",
+            "type": "integer"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region"
+          },
+          "reopen_count": {
+            "title": "Reopen Count",
+            "type": "integer"
+          },
+          "sla_resolution_breached": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sla Resolution Breached"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "subject_redacted": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject Redacted"
+          }
+        },
+        "required": [
+          "id",
+          "external_id",
+          "channel",
+          "customer_id",
+          "region",
+          "subject_redacted",
+          "priority",
+          "customer_category",
+          "first_queue",
+          "final_queue",
+          "status",
+          "created_at",
+          "reassignment_count",
+          "reopen_count",
+          "in_payroll_window",
+          "ingestion_status"
+        ],
+        "title": "TicketSummary",
+        "type": "object"
+      },
+      "UserOut": {
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "full_name": {
+            "title": "Full Name",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "permissions": {
+            "items": {
+              "$ref": "#/components/schemas/Permission"
+            },
+            "title": "Permissions",
+            "type": "array"
+          },
+          "regions": {
+            "items": {
+              "$ref": "#/components/schemas/Region"
+            },
+            "title": "Regions",
+            "type": "array"
+          },
+          "roles": {
+            "items": {
+              "$ref": "#/components/schemas/RoleName"
+            },
+            "title": "Roles",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "full_name",
+          "roles",
+          "regions",
+          "permissions"
+        ],
+        "title": "UserOut",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      },
+      "VersionOut": {
+        "properties": {
+          "approval_status": {
+            "title": "Approval Status",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          },
+          "content_complete": {
+            "title": "Content Complete",
+            "type": "boolean"
+          },
+          "effective_from": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective From"
+          },
+          "effective_to": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective To"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "indexed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indexed At"
+          },
+          "superseded_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Superseded By"
+          },
+          "validity_source": {
+            "title": "Validity Source",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "content_complete",
+          "effective_from",
+          "effective_to",
+          "validity_source",
+          "superseded_by",
+          "approval_status",
+          "indexed_at",
+          "content"
+        ],
+        "title": "VersionOut",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "title": "PayNest AI Support Intelligence Platform API",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/v1/analytics/cost": {
+      "get": {
+        "operationId": "cost_api_v1_analytics_cost_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "implementation_cost_usd",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "minimum": 0.0,
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Implementation Cost Usd"
+            }
+          },
+          {
+            "in": "query",
+            "name": "minutes_saved_per_draft",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maximum": 60.0,
+                  "minimum": 0.0,
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                }
+              ],
+              "default": "4",
+              "title": "Minutes Saved Per Draft"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fte_hours_per_month",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "exclusiveMinimum": 0.0,
+                  "maximum": 250.0,
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                }
+              ],
+              "default": "160",
+              "title": "Fte Hours Per Month"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Cost Api V1 Analytics Cost Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Cost",
+        "tags": [
+          "analytics"
+        ]
+      }
+    },
+    "/api/v1/analytics/model-usage": {
+      "get": {
+        "operationId": "model_usage_api_v1_analytics_model_usage_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Model Usage Api V1 Analytics Model Usage Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Model Usage",
+        "tags": [
+          "analytics"
+        ]
+      }
+    },
+    "/api/v1/approvals": {
+      "get": {
+        "operationId": "list_approvals_api_v1_approvals_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "default": "pending",
+              "enum": [
+                "pending",
+                "approved",
+                "rejected",
+                "escalated",
+                "resolved",
+                "all"
+              ],
+              "title": "Status",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "queue",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Queue"
+            }
+          },
+          {
+            "in": "query",
+            "name": "lane",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lane"
+            }
+          },
+          {
+            "in": "query",
+            "name": "rule_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Rule Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "minimum": 1,
+              "title": "Page",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_ApprovalSummary_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Approvals",
+        "tags": [
+          "approvals"
+        ]
+      }
+    },
+    "/api/v1/approvals/{approval_id}": {
+      "get": {
+        "operationId": "get_approval_api_v1_approvals__approval_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "approval_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Approval Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApprovalDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Approval",
+        "tags": [
+          "approvals"
+        ]
+      }
+    },
+    "/api/v1/approvals/{approval_id}/approve": {
+      "post": {
+        "operationId": "approve_api_v1_approvals__approval_id__approve_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "approval_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Approval Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApprovalDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Approve",
+        "tags": [
+          "approvals"
+        ]
+      }
+    },
+    "/api/v1/approvals/{approval_id}/decision": {
+      "post": {
+        "operationId": "decision_api_v1_approvals__approval_id__decision_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "approval_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Approval Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecisionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApprovalDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Decision",
+        "tags": [
+          "approvals"
+        ]
+      }
+    },
+    "/api/v1/approvals/{approval_id}/draft": {
+      "put": {
+        "description": "Save the reply draft (redacted text with tokens). It is validated immediately; results are returned.",
+        "operationId": "put_draft_api_v1_approvals__approval_id__draft_put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "approval_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Approval Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DraftRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApprovalDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Put Draft",
+        "tags": [
+          "approvals"
+        ]
+      }
+    },
+    "/api/v1/approvals/{approval_id}/escalate": {
+      "post": {
+        "operationId": "escalate_api_v1_approvals__approval_id__escalate_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "approval_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Approval Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "target",
+            "required": false,
+            "schema": {
+              "default": "L2",
+              "title": "Target",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "note",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Note"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApprovalDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Escalate",
+        "tags": [
+          "approvals"
+        ]
+      }
+    },
+    "/api/v1/approvals/{approval_id}/reject": {
+      "post": {
+        "operationId": "reject_api_v1_approvals__approval_id__reject_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "approval_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Approval Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "note",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Note"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApprovalDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Reject",
+        "tags": [
+          "approvals"
+        ]
+      }
+    },
+    "/api/v1/audit-logs": {
+      "get": {
+        "operationId": "list_audit_logs_api_v1_audit_logs_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "action",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 100,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Action"
+            }
+          },
+          {
+            "in": "query",
+            "name": "entity_type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 60,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Entity Type"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "minimum": 1,
+              "title": "Page",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_AuditLogOut_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Audit Logs",
+        "tags": [
+          "audit"
+        ]
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "operationId": "login_api_v1_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Login",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "operationId": "logout_api_v1_auth_logout_post",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Logout",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "operationId": "me_api_v1_auth_me_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Me",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/customers": {
+      "get": {
+        "operationId": "list_customers_api_v1_customers_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "tier",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "Enterprise",
+                    "Business",
+                    "Standard"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Tier"
+            }
+          },
+          {
+            "in": "query",
+            "name": "region",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "IN",
+                    "UAE"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Region"
+            }
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 100,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "minimum": 1,
+              "title": "Page",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_CustomerOut_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Customers",
+        "tags": [
+          "customers"
+        ]
+      }
+    },
+    "/api/v1/customers/{customer_id}": {
+      "get": {
+        "operationId": "get_customer_api_v1_customers__customer_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "customer_id",
+            "required": true,
+            "schema": {
+              "title": "Customer Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Customer",
+        "tags": [
+          "customers"
+        ]
+      }
+    },
+    "/api/v1/dashboard/breakdowns": {
+      "get": {
+        "operationId": "breakdowns_api_v1_dashboard_breakdowns_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Breakdowns Api V1 Dashboard Breakdowns Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Breakdowns",
+        "tags": [
+          "dashboard"
+        ]
+      }
+    },
+    "/api/v1/dashboard/routing-performance": {
+      "get": {
+        "description": "Today's routing baseline per first queue: share of tickets that stayed in the queue they started in.",
+        "operationId": "routing_performance_api_v1_dashboard_routing_performance_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Routing Performance Api V1 Dashboard Routing Performance Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Routing Performance",
+        "tags": [
+          "dashboard"
+        ]
+      }
+    },
+    "/api/v1/dashboard/sla-performance": {
+      "get": {
+        "operationId": "sla_performance_api_v1_dashboard_sla_performance_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Sla Performance Api V1 Dashboard Sla Performance Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Sla Performance",
+        "tags": [
+          "dashboard"
+        ]
+      }
+    },
+    "/api/v1/dashboard/summary": {
+      "get": {
+        "operationId": "summary_api_v1_dashboard_summary_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Summary Api V1 Dashboard Summary Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Summary",
+        "tags": [
+          "dashboard"
+        ]
+      }
+    },
+    "/api/v1/dashboard/ticket-trends": {
+      "get": {
+        "operationId": "ticket_trends_api_v1_dashboard_ticket_trends_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Ticket Trends Api V1 Dashboard Ticket Trends Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Ticket Trends",
+        "tags": [
+          "dashboard"
+        ]
+      }
+    },
+    "/api/v1/duplicates": {
+      "get": {
+        "operationId": "list_incidents_api_v1_duplicates_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "kind",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "resubmission",
+                    "incident"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Kind"
+            }
+          },
+          {
+            "in": "query",
+            "name": "customer_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Customer Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "minimum": 1,
+              "title": "Page",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_IncidentOut_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Incidents",
+        "tags": [
+          "duplicates"
+        ]
+      }
+    },
+    "/api/v1/duplicates/detect": {
+      "post": {
+        "operationId": "detect_api_v1_duplicates_detect_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "integer"
+                  },
+                  "title": "Response Detect Api V1 Duplicates Detect Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Detect",
+        "tags": [
+          "duplicates"
+        ]
+      }
+    },
+    "/api/v1/duplicates/{incident_id}": {
+      "get": {
+        "operationId": "get_incident_api_v1_duplicates__incident_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "incident_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Incident Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IncidentDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Incident",
+        "tags": [
+          "duplicates"
+        ]
+      }
+    },
+    "/api/v1/duplicates/{incident_id}/link": {
+      "post": {
+        "description": "A person adds a ticket to the case. Only tickets of the same customer can be grouped.",
+        "operationId": "link_api_v1_duplicates__incident_id__link_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "incident_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Incident Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IncidentDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Link",
+        "tags": [
+          "duplicates"
+        ]
+      }
+    },
+    "/api/v1/duplicates/{incident_id}/unlink": {
+      "post": {
+        "description": "A person separates a ticket from the case. Recorded as a manual decision that re-detection respects.",
+        "operationId": "unlink_api_v1_duplicates__incident_id__unlink_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "incident_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Incident Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IncidentDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Unlink",
+        "tags": [
+          "duplicates"
+        ]
+      }
+    },
+    "/api/v1/evaluations": {
+      "get": {
+        "operationId": "list_runs_api_v1_evaluations_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "gate",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Gate"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "minimum": 1,
+              "title": "Page",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_dict_str__Any__"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Runs",
+        "tags": [
+          "evaluations"
+        ]
+      }
+    },
+    "/api/v1/evaluations/gates": {
+      "get": {
+        "description": "Latest run per gate with its recent history (newest first).",
+        "operationId": "gates_api_v1_evaluations_gates_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  "title": "Response Gates Api V1 Evaluations Gates Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Gates",
+        "tags": [
+          "evaluations"
+        ]
+      }
+    },
+    "/api/v1/evaluations/run": {
+      "post": {
+        "operationId": "run_api_v1_evaluations_run_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  "title": "Response Run Api V1 Evaluations Run Post",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Run",
+        "tags": [
+          "evaluations"
+        ]
+      }
+    },
+    "/api/v1/evaluations/{run_id}": {
+      "get": {
+        "operationId": "get_run_api_v1_evaluations__run_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Get Run Api V1 Evaluations  Run Id  Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Run",
+        "tags": [
+          "evaluations"
+        ]
+      }
+    },
+    "/api/v1/knowledge/documents": {
+      "get": {
+        "operationId": "list_documents_api_v1_knowledge_documents_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "doc_type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Doc Type"
+            }
+          },
+          {
+            "in": "query",
+            "name": "region",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^(IN|UAE|ALL)$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Region"
+            }
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 100,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "minimum": 1,
+              "title": "Page",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_DocumentOut_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Documents",
+        "tags": [
+          "knowledge"
+        ]
+      }
+    },
+    "/api/v1/knowledge/documents/{document_id}": {
+      "get": {
+        "operationId": "get_document_api_v1_knowledge_documents__document_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "title": "Document Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Document",
+        "tags": [
+          "knowledge"
+        ]
+      }
+    },
+    "/api/v1/knowledge/documents/{document_id}/chunks": {
+      "get": {
+        "operationId": "get_chunks_api_v1_knowledge_documents__document_id__chunks_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "title": "Document Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ChunkOut"
+                  },
+                  "title": "Response Get Chunks Api V1 Knowledge Documents  Document Id  Chunks Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Chunks",
+        "tags": [
+          "knowledge"
+        ]
+      }
+    },
+    "/api/v1/knowledge/documents/{document_id}/retire": {
+      "post": {
+        "operationId": "retire_api_v1_knowledge_documents__document_id__retire_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "title": "Document Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Retire",
+        "tags": [
+          "knowledge"
+        ]
+      }
+    },
+    "/api/v1/knowledge/index": {
+      "post": {
+        "operationId": "reindex_api_v1_knowledge_index_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "integer"
+                  },
+                  "title": "Response Reindex Api V1 Knowledge Index Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Reindex",
+        "tags": [
+          "knowledge"
+        ]
+      }
+    },
+    "/api/v1/knowledge/search": {
+      "post": {
+        "description": "Retrieval tester. The query is PII-redacted before it is searched or logged.",
+        "operationId": "search_api_v1_knowledge_search_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Search",
+        "tags": [
+          "knowledge"
+        ]
+      }
+    },
+    "/api/v1/memory": {
+      "get": {
+        "description": "Human-approved resolutions. Filtered to the caller's regions; expired entries hidden by default.",
+        "operationId": "list_memory_api_v1_memory_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "customer_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Customer Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "include_expired",
+            "required": false,
+            "schema": {
+              "default": false,
+              "title": "Include Expired",
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "minimum": 1,
+              "title": "Page",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_MemoryOut_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Memory",
+        "tags": [
+          "approvals"
+        ]
+      }
+    },
+    "/api/v1/processing/batches": {
+      "get": {
+        "operationId": "list_batches_api_v1_processing_batches_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "minimum": 1,
+              "title": "Page",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_IngestionBatchOut_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Batches",
+        "tags": [
+          "processing"
+        ]
+      }
+    },
+    "/api/v1/processing/batches/{batch_id}": {
+      "get": {
+        "operationId": "get_batch_api_v1_processing_batches__batch_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "batch_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Batch Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IngestionBatchOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Batch",
+        "tags": [
+          "processing"
+        ]
+      }
+    },
+    "/api/v1/processing/ingest": {
+      "post": {
+        "description": "Ingest the pinned source exports (tickets, WhatsApp, calls) plus reference data. Idempotent.",
+        "operationId": "ingest_api_v1_processing_ingest_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IngestionBatchOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Ingest",
+        "tags": [
+          "processing"
+        ]
+      }
+    },
+    "/api/v1/processing/overview": {
+      "get": {
+        "description": "Counts per pipeline stage across all tickets in the caller's regions.",
+        "operationId": "processing_overview_api_v1_processing_overview_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Processing Overview Api V1 Processing Overview Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Processing Overview",
+        "tags": [
+          "processing"
+        ]
+      }
+    },
+    "/api/v1/processing/{ref}/status": {
+      "get": {
+        "operationId": "processing_status_api_v1_processing__ref__status_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ref",
+            "required": true,
+            "schema": {
+              "title": "Ref",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Processing Status Api V1 Processing  Ref  Status Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Processing Status",
+        "tags": [
+          "processing"
+        ]
+      }
+    },
+    "/api/v1/settings": {
+      "get": {
+        "operationId": "get_settings_api_v1_settings_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Get Settings Api V1 Settings Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get Settings",
+        "tags": [
+          "settings"
+        ]
+      },
+      "patch": {
+        "description": "Change runtime settings, e.g. {\"dedupe.incident_min_tickets\": 6}. Bounded, typed and audited.",
+        "operationId": "patch_settings_api_v1_settings_patch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "title": "Body",
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Patch Settings Api V1 Settings Patch",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Patch Settings",
+        "tags": [
+          "settings"
+        ]
+      }
+    },
+    "/api/v1/sla/reconciliation": {
+      "get": {
+        "description": "Finance's breach/credit list vs the SLA engine's independent calculation, ticket by ticket.",
+        "operationId": "reconciliation_api_v1_sla_reconciliation_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reconciliation"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Reconciliation",
+        "tags": [
+          "sla"
+        ]
+      }
+    },
+    "/api/v1/statutory/rates": {
+      "get": {
+        "description": "Statutory parameters in force on `as_of` (default today), mirroring the engine's /statutory/rates.",
+        "operationId": "rates_api_v1_statutory_rates_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "region",
+            "required": true,
+            "schema": {
+              "pattern": "^(IN|UAE)$",
+              "title": "Region",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "as_of",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "As Of"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RateOut"
+                  },
+                  "title": "Response Rates Api V1 Statutory Rates Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Rates",
+        "tags": [
+          "knowledge"
+        ]
+      }
+    },
+    "/api/v1/tickets": {
+      "get": {
+        "operationId": "list_tickets_api_v1_tickets_get",
+        "parameters": [
+          {
+            "description": "Ticket id or text in the redacted subject",
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 100,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Ticket id or text in the redacted subject",
+              "title": "Q"
+            }
+          },
+          {
+            "in": "query",
+            "name": "channel",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Channel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "priority",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "P1",
+                    "P2",
+                    "P3"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Priority"
+            }
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Category"
+            }
+          },
+          {
+            "in": "query",
+            "name": "region",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "IN",
+                    "UAE"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Region"
+            }
+          },
+          {
+            "in": "query",
+            "name": "customer_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Customer Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "queue",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Queue"
+            }
+          },
+          {
+            "in": "query",
+            "name": "ingestion_status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Ingestion Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sla_breached",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Sla Breached"
+            }
+          },
+          {
+            "in": "query",
+            "name": "payroll_window",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Payroll Window"
+            }
+          },
+          {
+            "in": "query",
+            "name": "reassigned",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Reassigned"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "schema": {
+              "default": "created_at",
+              "enum": [
+                "created_at",
+                "external_id",
+                "priority",
+                "reassignment_count"
+              ],
+              "title": "Sort",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "required": false,
+            "schema": {
+              "default": "desc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "title": "Order",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "minimum": 1,
+              "title": "Page",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_TicketSummary_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Tickets",
+        "tags": [
+          "tickets"
+        ]
+      }
+    },
+    "/api/v1/tickets/{ref}": {
+      "get": {
+        "operationId": "get_ticket_api_v1_tickets__ref__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ref",
+            "required": true,
+            "schema": {
+              "title": "Ref",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Ticket",
+        "tags": [
+          "tickets"
+        ]
+      }
+    },
+    "/api/v1/tickets/{ref}/pii/{token}/reveal": {
+      "post": {
+        "description": "DPO-only access to one original value, with a stated reason. Audited without the value itself.",
+        "operationId": "reveal_pii_api_v1_tickets__ref__pii__token__reveal_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ref",
+            "required": true,
+            "schema": {
+              "title": "Ref",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "title": "Token",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevealRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevealResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Reveal Pii",
+        "tags": [
+          "approvals"
+        ]
+      }
+    },
+    "/api/v1/tickets/{ref}/process": {
+      "post": {
+        "operationId": "process_ticket_api_v1_tickets__ref__process_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ref",
+            "required": true,
+            "schema": {
+              "title": "Ref",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessResult"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Process Ticket",
+        "tags": [
+          "processing"
+        ]
+      }
+    },
+    "/api/v1/tickets/{ref}/routing": {
+      "get": {
+        "operationId": "ticket_routing_api_v1_tickets__ref__routing_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ref",
+            "required": true,
+            "schema": {
+              "title": "Ref",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketRouting"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Ticket Routing",
+        "tags": [
+          "processing"
+        ]
+      }
+    },
+    "/api/v1/tickets/{ref}/timeline": {
+      "get": {
+        "operationId": "ticket_timeline_api_v1_tickets__ref__timeline_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ref",
+            "required": true,
+            "schema": {
+              "title": "Ref",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  "title": "Response Ticket Timeline Api V1 Tickets  Ref  Timeline Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Ticket Timeline",
+        "tags": [
+          "tickets"
+        ]
+      }
+    },
+    "/health": {
+      "get": {
+        "description": "Process is up. Does not touch dependencies.",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Health Health Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health",
+        "tags": [
+          "health"
+        ]
+      }
+    },
+    "/ready": {
+      "get": {
+        "description": "Database reachable, migrations applied, pgvector installed.",
+        "operationId": "ready_ready_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Ready Ready Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Ready",
+        "tags": [
+          "health"
+        ]
+      }
+    }
+  }
+}

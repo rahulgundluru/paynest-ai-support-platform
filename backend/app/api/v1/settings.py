@@ -11,7 +11,7 @@ from app.ai.prompts.classification import PROMPT_VERSION
 from app.api.deps import Principal, SessionDep, SettingsDep, require
 from app.core.rbac import ROLE_PERMISSIONS, Permission
 from app.models.reference import SlaTerm
-from app.services import runtime_config
+from app.services import ai_config, runtime_config
 from app.services.deduplication.detector import RULESET_VERSION as DEDUPE_VERSION
 from app.services.normalization.rules import RULESET_VERSION as NORMALIZATION_VERSION
 from app.services.routing.engine import RULES, RULESET_VERSION
@@ -24,6 +24,7 @@ router = APIRouter(prefix="/settings", tags=["settings"])
 async def _view(session: SessionDep, settings: SettingsDep) -> dict[str, Any]:
     values = await runtime_config.effective(session)
     rows = await runtime_config.stored(session)
+    ai = await ai_config.load(session, settings)
     terms = await session.scalars(select(SlaTerm).order_by(SlaTerm.tier, SlaTerm.priority))
     return {
         "runtime": [
@@ -41,15 +42,28 @@ async def _view(session: SessionDep, settings: SettingsDep) -> dict[str, Any]:
             }
             for spec in runtime_config.SPECS.values()
         ],
-        "models": {
-            "llm_provider": settings.llm_provider,
-            "classifier_model_id": settings.bedrock_classifier_model_id or "not configured",
-            "embedding_provider": settings.embedding_provider,
-            "embedding_model_id": settings.bedrock_embedding_model_id or "not configured",
-            "region": settings.bedrock_region,
-            "credentials": "AWS default credential chain (IAM role in AWS); never stored or displayed here",
-            "change_process": "Deployment configuration (environment / Secrets Manager); not editable here.",
-        },
+        "models": (
+            {
+                "llm_provider": "openrouter",
+                "ai_enabled": "yes" if ai.enabled else "no",
+                "classifier_model_id": ai.classifier_model or "not configured",
+                "drafting_model_id": ai.drafting_model or "not configured",
+                "api_key": "configured" if ai.key_configured else "missing",
+                "embedding_provider": settings.embedding_provider,
+                "privacy": "masked text only; data_collection=deny, zero data retention",
+                "change_process": "Models, caps and on/off: AI management (admin). The key: environment only.",
+            }
+            if settings.llm_provider == "openrouter"
+            else {
+                "llm_provider": settings.llm_provider,
+                "classifier_model_id": settings.bedrock_classifier_model_id or "not configured",
+                "embedding_provider": settings.embedding_provider,
+                "embedding_model_id": settings.bedrock_embedding_model_id or "not configured",
+                "region": settings.bedrock_region,
+                "credentials": "AWS default credential chain (IAM role in AWS); never stored or displayed here",
+                "change_process": "Deployment configuration (environment / Secrets Manager); not editable here.",
+            }
+        ),
         "privacy": {
             "pii_retention_days": settings.pii_retention_days,
             "retention_note": "Pending the DPO's retention decision; deployment configuration.",

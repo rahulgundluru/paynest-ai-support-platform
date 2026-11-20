@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { PiiReveal } from "@/components/pii-reveal";
+import { TicketPipelineCard } from "@/components/ticket-pipeline-card";
 import { TicketRoutingCard } from "@/components/ticket-routing";
 import { Alert, Badge, Card, Spinner } from "@/components/ui";
 import { hasPermission, useCurrentUser } from "@/hooks/use-auth";
@@ -158,6 +159,8 @@ export default function TicketDetailPage() {
           )}
         </Card>
       </div>
+
+      <TicketPipelineCard ticketRef={t.external_id ?? t.id} />
 
       <TicketRoutingCard ticketRef={t.external_id ?? t.id} />
 

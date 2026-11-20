@@ -17,6 +17,7 @@ interface NavItem {
 
 const NAV: NavItem[] = [
   { label: "Dashboard", href: "/dashboard" },
+  { label: "New ticket", href: "/tickets/new", permission: "tickets:create" },
   { label: "Tickets", href: "/tickets", permission: "tickets:read" },
   { label: "Processing monitor", href: "/processing", permission: "tickets:read" },
   { label: "Customers", href: "/customers", permission: "customers:read" },
@@ -25,6 +26,7 @@ const NAV: NavItem[] = [
   { label: "Review queue", href: "/review", permission: "approvals:read" },
   { label: "Evaluations", href: "/evaluations", permission: "evaluations:read" },
   { label: "Cost analytics", href: "/analytics/cost", permission: "sla:read" },
+  { label: "AI management", href: "/ai", permission: "ai:read" },
   { label: "Data ingestion", href: "/ingestion", permission: "ingestion:read" },
   { label: "Audit log", href: "/audit", permission: "audit:read" },
   { label: "Settings", href: "/settings", permission: "settings:read" },
@@ -37,6 +39,11 @@ export function AppShell({ user, children }: { user: User; children: ReactNode }
   const [open, setOpen] = useState(false);
 
   const items = NAV.filter((item) => !item.permission || hasPermission(user, item.permission));
+  // The most specific matching entry is active (so /tickets/new highlights "New ticket", not "Tickets").
+  const activeHref = items
+    .map((item) => item.href)
+    .filter((href): href is string => !!href && (pathname === href || pathname.startsWith(`${href}/`)))
+    .sort((a, b) => b.length - a.length)[0];
 
   return (
     <div className="min-h-screen md:flex">
@@ -62,9 +69,9 @@ export function AppShell({ user, children }: { user: User; children: ReactNode }
                   <Link
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    aria-current={pathname.startsWith(item.href) ? "page" : undefined}
+                    aria-current={item.href === activeHref ? "page" : undefined}
                     className={`block rounded-md px-3 py-2 text-sm ${
-                      pathname.startsWith(item.href)
+                      item.href === activeHref
                         ? "bg-surface-muted font-medium text-text"
                         : "text-text-muted hover:bg-surface-muted hover:text-text"
                     }`}

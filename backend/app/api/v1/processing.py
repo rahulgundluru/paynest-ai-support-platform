@@ -43,9 +43,11 @@ async def list_batches(
     page: Annotated[int, Query(ge=1)] = 1,
     page_size: Annotated[int, Query(ge=1, le=100)] = 20,
 ) -> Page[IngestionBatchOut]:
-    total = await session.scalar(select(func.count()).select_from(IngestionBatch)) or 0
+    imports = IngestionBatch.summary["origin"].astext.is_(None)  # tickets entered in the app are not imports
+    total = await session.scalar(select(func.count()).select_from(IngestionBatch).where(imports)) or 0
     rows = await session.scalars(
         select(IngestionBatch)
+        .where(imports)
         .order_by(IngestionBatch.started_at.desc())
         .offset((page - 1) * page_size)
         .limit(page_size)

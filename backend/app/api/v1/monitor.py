@@ -13,7 +13,7 @@ from app.api.v1.processing_ai import _ticket
 from app.core.rbac import Permission
 from app.models.approvals import Approval
 from app.models.knowledge import RetrievalLog
-from app.models.processing import Classification, IncidentLink, RoutingDecision
+from app.models.processing import Classification, IncidentLink, ModelUsage, RoutingDecision
 from app.models.tickets import NormalizationLog, PiiDetection, SourceRecord, Ticket
 
 router = APIRouter(prefix="/processing", tags=["processing"])
@@ -76,7 +76,17 @@ async def processing_overview(session: SessionDep, principal: Monitor) -> dict[s
             },
             {"stage": "routing", "counts": {"routed": await tickets_with(RoutingDecision.ticket_id)}},
             {"stage": "retrieval", "counts": {"tickets_with_retrieval": await tickets_with(RetrievalLog.ticket_id)}},
-            {"stage": "answer_generation", "counts": {"unavailable": total}, "note": "No drafting model configured."},
+            {
+                "stage": "answer_generation",
+                "counts": {
+                    "ai_drafts": await tickets_with(
+                        ModelUsage.ticket_id, ModelUsage.operation == "draft", ModelUsage.success
+                    ),
+                    "no_ai_draft": total
+                    - await tickets_with(ModelUsage.ticket_id, ModelUsage.operation == "draft", ModelUsage.success),
+                },
+                "note": "AI drafts are written only in lanes the routing rules allow, and only when AI is on.",
+            },
             {"stage": "human_approval", "counts": approvals},
         ],
     }
@@ -112,6 +122,15 @@ async def processing_status(ref: str, session: SessionDep, principal: Monitor) -
         select(Approval).where(Approval.ticket_id == ticket.id).order_by(Approval.created_at.desc()).limit(1)
     )
     validation = approval.validation if approval else None
+    draft_ok = await session.scalar(
+        select(ModelUsage)
+        .where(ModelUsage.ticket_id == ticket.id, ModelUsage.operation == "draft", ModelUsage.success)
+        .order_by(ModelUsage.created_at.desc())
+        .limit(1)
+    )
+    draft_tried = await session.scalar(
+        select(func.count()).where(ModelUsage.ticket_id == ticket.id, ModelUsage.operation == "draft")
+    )
     reasons = ", ".join(ticket.review_reasons)
     stages = [
         _stage(
@@ -148,7 +167,27 @@ async def processing_status(ref: str, session: SessionDep, principal: Monitor) -
             "done" if retrievals else "not_run",
             f"{retrievals} retrieval(s) logged" if retrievals else "none yet",
         ),
-        _stage("answer_generation", "unavailable", "no drafting model configured"),
+        _stage(
+            "answer_generation",
+            "done"
+            if draft_ok
+            else (
+                "failed"
+                if draft_tried
+                else ("not_run" if approval is None or approval.draft_source == "none" else "done")
+            ),
+            f"AI draft by {draft_ok.model}"
+            if draft_ok
+            else (
+                "AI draft attempted but failed"
+                if draft_tried
+                else (
+                    "written by a person"
+                    if approval and approval.draft_source == "human"
+                    else "no AI draft (lane, switch or cap)"
+                )
+            ),
+        ),
         _stage(
             "validation",
             "not_run" if not validation else ("done" if validation.get("passed") else "failed"),

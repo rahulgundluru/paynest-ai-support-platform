@@ -95,11 +95,18 @@ export default function TicketsPage() {
 
   return (
     <div className="space-y-4">
-      <div>
-        <h1 className="text-xl font-semibold">Tickets</h1>
-        <p className="text-sm text-text-muted">
-          Ingested tickets from email, widget, partner portal, WhatsApp and phone. Text is shown redacted.
-        </p>
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 className="text-xl font-semibold">Tickets</h1>
+          <p className="text-sm text-text-muted">
+            Tickets from email, widget, partner portal, WhatsApp and phone (imported or logged here). Text is shown redacted.
+          </p>
+        </div>
+        {hasPermission(user, "tickets:create") && (
+          <Link href="/tickets/new" className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-contrast hover:opacity-90">
+            New ticket
+          </Link>
+        )}
       </div>
       <Card>
         <form

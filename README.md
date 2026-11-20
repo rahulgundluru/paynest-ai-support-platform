@@ -18,10 +18,27 @@ All case data is synthetic; see [docs/discovery](docs/discovery/README.md) for t
 | 4 Human & security | Review queue + approval workflow, output validation (G6), learned memory, DPO-only PII reveal, rate limiting | **Done locally** ([details](docs/architecture/human-approval-security.md)); AI drafts, semantic cache and DB row-level security pending |
 | 5 Frontend | Live dashboard and charts, processing monitor, customers, settings (runtime config) | **Done locally** ([details](docs/architecture/frontend.md)) |
 | 6 Evaluation | G1–G7 runners + report, evaluation and cost screens, CI evaluation job, Promptfoo config | **Done locally** ([framework](docs/evaluation/README.md), [latest report](docs/evaluation/report.md)); model-dependent parts not run |
-| 7 AWS | Deployment | Pending |
-| 8 Delivery | Docs, diagrams, demo, presentation | Pending |
+| 7 AWS | Deployment | **Paused** ([target and prerequisites](docs/deployment/README.md#7-aws-phase-7-paused)); nothing deployed |
+| 8 Delivery | Docs, diagrams, demo, presentation | **Done** ([delivery summary](docs/delivery/README.md), [demo script](docs/demo/README.md), [slide deck](https://claude.ai/artifact/MyRPo9jBXQDevbupyqpnHX)) |
 
 No screen shows estimated or placeholder business metrics; anything that needs an AI model is labelled as not run.
+
+## Documentation
+
+| Topic | Document |
+|---|---|
+| What was delivered, acceptance criteria, gaps | [Delivery summary](docs/delivery/README.md) |
+| Architecture and diagrams | [Overview](docs/architecture/overview.md) · [data pipeline](docs/architecture/data-pipeline.md) · [AI pipeline](docs/architecture/ai-pipeline.md) · [approval and security](docs/architecture/human-approval-security.md) · [frontend](docs/architecture/frontend.md) |
+| Database ER diagram | [Database](docs/database/README.md) |
+| API | [API reference](docs/api/README.md) · [openapi.json](docs/api/openapi.json) · live at `/api/docs` |
+| Evaluation G1–G7 | [Framework](docs/evaluation/README.md) · [latest report](docs/evaluation/report.md) |
+| Security and privacy (DPIA notes) | [Security](docs/security/README.md) · [role matrix](docs/security/rbac.md) |
+| Cost | [Cost analysis](docs/cost-analysis/README.md) |
+| Running it | [Deployment guide](docs/deployment/README.md) |
+| Demo and presentation | [Demo script](docs/demo/README.md) · [slide deck](https://claude.ai/artifact/MyRPo9jBXQDevbupyqpnHX) |
+| Source data findings | [Discovery](docs/discovery/README.md) |
+
+The API, database and role documents are generated from the code: `cd backend && python ../scripts/generate_reference_docs.py`.
 
 ## Layout
 
@@ -29,9 +46,10 @@ No screen shows estimated or placeholder business metrics; anything that needs a
 backend/          FastAPI app (app/), Alembic migrations, pytest suite
 frontend/         Next.js App Router UI (TypeScript, Tailwind, TanStack Query, RHF + Zod)
 data/             source manifest (source data itself is fetched, not committed)
-docs/             discovery, architecture, security, evaluation, deployment docs
-infrastructure/   docker init scripts (AWS IaC in Phase 7)
-scripts/          source data fetch/verify
+docs/             discovery, architecture, database, API, security, evaluation, cost, deployment, demo
+evaluations/      evaluation datasets, Promptfoo config, run_evaluations.py
+infrastructure/   docker init scripts (AWS infrastructure pending, Phase 7 paused)
+scripts/          source data fetch/verify, reference doc generator
 .github/workflows CI: lint, type check, reversible migrations, tests, image builds
 ```
 
