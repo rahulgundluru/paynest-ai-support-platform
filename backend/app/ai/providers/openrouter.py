@@ -22,7 +22,9 @@ import httpx
 from app.ai.providers.base import ProviderUnavailable, StructuredResult, assert_no_pii
 
 APP_TITLE = "PayNest Support Platform"
-PRIVACY = {"data_collection": "deny", "zdr": True, "require_parameters": True}
+# Privacy routing only. (require_parameters is NOT set: it filters on parameter metadata and excluded every
+# endpoint for some models; outputs are schema-validated anyway.)
+PRIVACY = {"data_collection": "deny", "zdr": True}
 _RETRYABLE = {408, 429, 500, 502, 503, 504}
 
 
@@ -41,6 +43,8 @@ def _error_code(status: int, body: str) -> str:
         return "auth_failed"
     if status == 402:
         return "insufficient_credits"
+    if status == 404 and "tool_choice" in text:
+        return "tool_choice_unsupported"
     if status == 404 and ("data policy" in text or "no endpoints" in text or "zdr" in text):
         return "no_private_endpoint"
     if status == 404:
@@ -101,13 +105,21 @@ class OpenRouterLLM:
                     "function": {"name": tool_name, "description": tool_description, "parameters": schema},
                 }
             ],
-            "tool_choice": {"type": "function", "function": {"name": tool_name}},
             "temperature": 0,
             "max_tokens": max_tokens,
             "provider": PRIVACY,
         }
         started = time.perf_counter()
-        body = await self._post_with_retry("/chat/completions", payload)
+        # Force the one tool by name; endpoints that cannot do that get "required" (equivalent with a single
+        # tool), then "auto" (the prompt asks for the tool, and _parse also accepts JSON content).
+        choices: list[Any] = [{"type": "function", "function": {"name": tool_name}}, "required", "auto"]
+        for i, choice in enumerate(choices):
+            try:
+                body = await self._post_with_retry("/chat/completions", {**payload, "tool_choice": choice})
+                break
+            except ProviderUnavailable as exc:
+                if exc.code != "tool_choice_unsupported" or i == len(choices) - 1:
+                    raise
         latency_ms = int((time.perf_counter() - started) * 1000)
         return self._parse(body, tool_name, latency_ms)
 

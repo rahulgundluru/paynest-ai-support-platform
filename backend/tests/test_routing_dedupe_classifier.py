@@ -181,3 +181,9 @@ async def test_low_confidence_requires_human_and_no_provider_is_unavailable():
     assert row.status == "ok" and row.requires_human
     none = await classify_ticket(_Session(), TICKET, None, get_settings())
     assert none.status == "unavailable" and none.requires_human and none.category is None
+
+
+async def test_long_free_text_is_trimmed_not_rejected():
+    long = {**GOOD, "explanation": "x" * 400, "intent": "y" * 200}
+    row = await classify_ticket(_Session(), TICKET, _FakeProvider([long]), get_settings())
+    assert row.status == "ok" and len(row.explanation) == 300 and len(row.intent) == 120

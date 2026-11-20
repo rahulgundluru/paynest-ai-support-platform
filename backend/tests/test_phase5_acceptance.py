@@ -99,7 +99,7 @@ async def test_processing_monitor_reflects_stored_state(data, client, make_user)
         "routing", "retrieval", "answer_generation", "validation", "human_approval",
     ]  # fmt: skip
     assert "block" in stages["routing"]["detail"]
-    assert stages["answer_generation"]["status"] == "unavailable"
+    assert stages["answer_generation"]["status"] == "not_run"  # blocked ticket: no AI draft, nothing pretended
     assert stages["human_approval"]["status"] == "pending"
     overview = (await client.get("/api/v1/processing/overview", headers=headers)).json()
     counts = {s["stage"]: s["counts"] for s in overview["stages"]}

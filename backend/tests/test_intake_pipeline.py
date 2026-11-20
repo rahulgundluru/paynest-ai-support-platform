@@ -105,7 +105,7 @@ async def test_openrouter_sends_privacy_routing_and_reads_reported_cost():
     llm = OpenRouterLLM("sk-test", "vendor/model-a", transport=transport)
     result = await _call(llm)
     body = json.loads(seen[0].content)
-    assert body["provider"] == {"data_collection": "deny", "zdr": True, "require_parameters": True}
+    assert body["provider"] == {"data_collection": "deny", "zdr": True}
     assert body["tool_choice"]["function"]["name"] == "record_x" and body["temperature"] == 0
     assert seen[0].headers["authorization"] == "Bearer sk-test"
     assert result.data == {"a": 1} and result.cost_usd == Decimal("0.000123")
@@ -150,6 +150,19 @@ async def test_openrouter_errors_retries_and_fallbacks():
         await _call(OpenRouterLLM("sk-test", "m/x", transport=transport))
 
 
+async def test_openrouter_falls_back_when_named_tool_choice_is_unsupported():
+    unsupported = {"error": {"message": "No endpoints found that support the provided 'tool_choice' value."}}
+
+    def handler(req: httpx.Request, n: int) -> httpx.Response:
+        choice = json.loads(req.content)["tool_choice"]
+        return httpx.Response(200, json=_completion({"ok": 1})) if choice == "required" else httpx.Response(404, json=unsupported)  # noqa: E501
+
+    transport, seen = _transport(handler)
+    result = await _call(OpenRouterLLM("sk-test", "m/x", transport=transport))
+    assert result.data == {"ok": 1}
+    assert [json.loads(r.content)["tool_choice"] for r in seen][1] == "required" and len(seen) == 2
+
+
 async def test_model_catalogue_keeps_priced_tool_models_cheapest_first():
     catalogue = {"data": [
         {"id": "a/expensive", "supported_parameters": ["tools", "tool_choice"],
@@ -157,12 +170,14 @@ async def test_model_catalogue_keeps_priced_tool_models_cheapest_first():
         {"id": "b/cheap", "supported_parameters": ["tools", "tool_choice"],
          "pricing": {"prompt": "0.0000001", "completion": "0.0000004"}},
         {"id": "c/no-tools", "supported_parameters": ["temperature"], "pricing": {"prompt": "0", "completion": "0"}},
-        {"id": "d/router", "supported_parameters": ["tools", "tool_choice"], "pricing": {"prompt": "-1", "completion": "-1"}},
+        {"id": "d/router", "supported_parameters": ["tools", "tool_choice"], "pricing": {"prompt": "-1", "completion": "-1"}},  # noqa: E501
     ]}  # fmt: skip
     transport, _ = _transport(lambda req, n: httpx.Response(200, json=catalogue))
     models = await fetch_models("https://openrouter.test/api/v1", transport=transport)
     assert [m["id"] for m in models] == ["b/cheap", "a/expensive"]
-    assert models[0]["input_usd_per_mtok"] == pytest.approx(0.1) and models[1]["output_usd_per_mtok"] == pytest.approx(15)
+    assert models[0]["input_usd_per_mtok"] == pytest.approx(0.1) and models[1]["output_usd_per_mtok"] == pytest.approx(
+        15
+    )
 
 
 # ------------------------------------------------------------------------------------ integration (API)
@@ -255,7 +270,7 @@ async def test_create_ticket_with_ai_classifies_drafts_validates_and_records_cos
     assert bad.status_code == 422
     ok = await client.patch(
         "/api/v1/ai/config",
-        json={"changes": {"ai.enabled": True, "ai.classifier_model": "vendor/small", "ai.drafting_model": "vendor/small",
+        json={"changes": {"ai.enabled": True, "ai.classifier_model": "vendor/small", "ai.drafting_model": "vendor/small",  # noqa: E501
                           "ai.ticket_budget_usd": 0.05}},
         headers=admin,
     )  # fmt: skip
@@ -267,7 +282,10 @@ async def test_create_ticket_with_ai_classifies_drafts_validates_and_records_cos
     steps = _steps(run)
     assert run["status"] == "completed" and run["ai_enabled"]
     assert steps["classify"]["status"] == "done" and steps["classify"]["details"]["category"] == "statutory"
-    assert steps["routing"]["details"]["rule_id"] == "R7" and steps["routing"]["details"]["queue"] == "Statutory-Compliance"
+    assert (
+        steps["routing"]["details"]["rule_id"] == "R7"
+        and steps["routing"]["details"]["queue"] == "Statutory-Compliance"
+    )
     assert steps["draft"]["status"] == "done" and steps["draft"]["cost_usd"] == "0.000310"
     assert steps["validation"]["status"] == "done", steps["validation"]
     assert steps["review"]["status"] == "review"

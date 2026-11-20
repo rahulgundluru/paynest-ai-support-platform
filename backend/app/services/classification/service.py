@@ -15,7 +15,7 @@ import uuid
 from decimal import Decimal
 from typing import Literal
 
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, Field, ValidationError, ValidationInfo, field_validator
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.ai.prompts import classification as prompt
@@ -105,6 +105,16 @@ class ClassificationOutput(BaseModel):
     requires_human: bool
     confidence: float = Field(ge=0, le=1)
     explanation: str = Field(max_length=300)
+
+    @field_validator("subcategory", "intent", "explanation", mode="before")
+    @classmethod
+    def _trim(cls, value: object, info: ValidationInfo) -> object:
+        # Free-text notes are trimmed, not rejected: a long explanation must not discard a valid decision.
+        # Decision fields (category, priority, flags, confidence) stay strictly validated.
+        limit = {"subcategory": 80, "intent": 120, "explanation": 300}[info.field_name or ""]
+        if isinstance(value, str) and len(value) > limit:
+            return value[: limit - 1].rstrip() + "…"
+        return value
 
 
 def _cost(settings: Settings, input_tokens: int, output_tokens: int) -> Decimal | None:

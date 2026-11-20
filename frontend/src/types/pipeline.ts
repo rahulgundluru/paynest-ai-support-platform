@@ -42,7 +42,7 @@ export interface AiStatus {
   key_configured?: boolean;
   daily_budget_usd?: number;
   ticket_budget_usd?: number;
-  privacy?: { data_collection: string; zdr: boolean; require_parameters: boolean; note: string };
+  privacy?: { data_collection: string; zdr: boolean; note: string };
 }
 
 export interface AiWindow {

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
-PROMPT_VERSION = "classify-v1"
+PROMPT_VERSION = "classify-v2"  # v2: narrow definition of requires_human; shorter explanation
 
 CATEGORIES = {
     "payroll": "payroll runs, net pay, arrears, payslips, bank files for salaries, run status",
@@ -40,8 +40,13 @@ Priority definitions (contract Schedule 3, §3.2):
 - P3: how-to, reports, cosmetic, configuration, everything else.
 
 The customer's own category pick is provided as a hint; it is often wrong. Judge from the text.
-Set requires_human=true when the ticket is ambiguous, mixes several issues, or asks for money to be
-moved, refunded or credited. Report your honest confidence between 0 and 1.
+Set requires_human=true ONLY when one of these applies:
+- the text is too ambiguous to choose a category;
+- it mixes several unrelated issues that need different teams;
+- the customer asks PayNest to move, refund, credit or waive money for them.
+Do NOT set it because a ticket is urgent, sensitive, statutory or contains personal-data tokens: the
+routing rules already send those to people for approval. Report your honest confidence between 0 and 1.
+Keep the explanation to one or two short sentences (under 250 characters).
 Respond only by calling the tool."""
 
 TOOL_NAME = "record_classification"

@@ -36,7 +36,9 @@ Copy `.env.example` to `.env` for Docker, or export the variables for a local ru
 | `COOKIE_SECURE` | no | `true` by default; set `false` only for plain-HTTP localhost |
 | `CORS_ORIGINS` | no | Only needed if a browser calls the API directly (the web proxy makes this unnecessary) |
 | `PII_RETENTION_DAYS` | no | 365 by default; an assumption pending the DPO |
-| `LLM_PROVIDER`, `EMBEDDING_PROVIDER` | no | `none` (default) or `bedrock` |
+| `LLM_PROVIDER` | no | `none` (default), `openrouter` or `bedrock` |
+| `OPENROUTER_API_KEY` | with OpenRouter | Secret; environment only, never stored in the database or shown in the UI. Models, caps and the on/off switch are in AI management |
+| `EMBEDDING_PROVIDER` | no | `none` (default) or `bedrock` |
 | `BEDROCK_REGION`, `BEDROCK_CLASSIFIER_MODEL_ID`, `BEDROCK_EMBEDDING_MODEL_ID` | with Bedrock | Confirm in-region model availability first |
 | `CLASSIFICATION_CONFIDENCE_THRESHOLD` | no | 0.80 by default |
 | `TEST_DATABASE_URL` | tests | A disposable database; tests truncate it |

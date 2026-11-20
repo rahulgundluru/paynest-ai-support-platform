@@ -19,6 +19,7 @@ All case data is synthetic; see [docs/discovery](docs/discovery/README.md) for t
 | 5 Frontend | Live dashboard and charts, processing monitor, customers, settings (runtime config) | **Done locally** ([details](docs/architecture/frontend.md)) |
 | 6 Evaluation | G1–G7 runners + report, evaluation and cost screens, CI evaluation job, Promptfoo config | **Done locally** ([framework](docs/evaluation/README.md), [latest report](docs/evaluation/report.md)); model-dependent parts not run |
 | 7 AWS | Deployment | **Paused** ([target and prerequisites](docs/deployment/README.md#7-aws-phase-7-paused)); nothing deployed |
+| + Intake & AI | New ticket screen, live pipeline view, OpenRouter classification and drafting, AI management (per-ticket cost, monitoring, caps) | **Done locally** ([details](docs/architecture/ticket-intake-ai.md)); verified live with OpenRouter on single tickets (about USD 0.0006 per ticket) |
 | 8 Delivery | Docs, diagrams, demo, presentation | **Done** ([delivery summary](docs/delivery/README.md), [demo script](docs/demo/README.md), [slide deck](https://claude.ai/artifact/MyRPo9jBXQDevbupyqpnHX)) |
 
 No screen shows estimated or placeholder business metrics; anything that needs an AI model is labelled as not run.
@@ -28,7 +29,7 @@ No screen shows estimated or placeholder business metrics; anything that needs a
 | Topic | Document |
 |---|---|
 | What was delivered, acceptance criteria, gaps | [Delivery summary](docs/delivery/README.md) |
-| Architecture and diagrams | [Overview](docs/architecture/overview.md) · [data pipeline](docs/architecture/data-pipeline.md) · [AI pipeline](docs/architecture/ai-pipeline.md) · [approval and security](docs/architecture/human-approval-security.md) · [frontend](docs/architecture/frontend.md) |
+| Architecture and diagrams | [Overview](docs/architecture/overview.md) · [data pipeline](docs/architecture/data-pipeline.md) · [AI pipeline](docs/architecture/ai-pipeline.md) · [approval and security](docs/architecture/human-approval-security.md) · [frontend](docs/architecture/frontend.md) · [ticket intake and AI management](docs/architecture/ticket-intake-ai.md) |
 | Database ER diagram | [Database](docs/database/README.md) |
 | API | [API reference](docs/api/README.md) · [openapi.json](docs/api/openapi.json) · live at `/api/docs` |
 | Evaluation G1–G7 | [Framework](docs/evaluation/README.md) · [latest report](docs/evaluation/report.md) |

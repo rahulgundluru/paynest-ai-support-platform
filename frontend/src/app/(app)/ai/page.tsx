@@ -150,7 +150,7 @@ function Overview() {
             data={o.by_day.map((d) => ({ label: d.date.slice(5), value: d.cost_usd, extra: `${d.calls} calls` }))}
             valueLabel="Cost"
             format={(v) => formatUsd(v)}
-            axisFormat={(v) => `$${v.toFixed(3)}`}
+            axisFormat={(v) => (v === 0 ? "$0" : v >= 1 ? `$${v.toFixed(2)}` : `$${v.toFixed(4)}`)}
           />
         </ChartCard>
         <ChartCard
