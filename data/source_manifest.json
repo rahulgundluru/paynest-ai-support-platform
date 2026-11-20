@@ -1,0 +1,215 @@
+{
+  "upstream_url": "https://github.com/niti007/paynest-support-discovery",
+  "upstream_commit": "502e718",
+  "note": "Simulated teaching data. Treat as confidential. Not committed to this repository.",
+  "excluded": [
+    "trainer/ (answer key; never fetched or read)"
+  ],
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 137,
+      "sha256": "fa546cd00a4e651f87580ee5502647bee0784de57f0f6bbeb31816ead447ce95"
+    },
+    {
+      "path": "Case.md",
+      "bytes": 6805,
+      "sha256": "cb3ce75ab07d2f56f5b1a62a56b5dab488b53a940d719cdac618b916d17ca539"
+    },
+    {
+      "path": "data-room/00_README_from_client.md",
+      "bytes": 2620,
+      "sha256": "66f322c1e9bdaffc554e36fb322c6a23183975f2bf1eb77d557104fceaf9f58c"
+    },
+    {
+      "path": "data-room/comms/email_cfo_thread.md",
+      "bytes": 2648,
+      "sha256": "ce36bd993f2305fc08dedddc355ae0238e83d6bb6e4980a1824b16cc3b5e5035"
+    },
+    {
+      "path": "data-room/comms/slack_support_leads.json",
+      "bytes": 9452,
+      "sha256": "f127c3725511cdebe2a1939cf4a9597f7b82bdfbeea34822dad1b2d747b45381"
+    },
+    {
+      "path": "data-room/data/agent_roster.csv",
+      "bytes": 2850,
+      "sha256": "59c1214d4d9832fe561f96b070f0e5c61cd88dfe4a3143aca5bd0c1598db0cfa"
+    },
+    {
+      "path": "data-room/data/call_center_notes.json",
+      "bytes": 26539,
+      "sha256": "5aa8f02eb585332f241b91c322b100ef68ac9eb96335cb66bf69d2644ad10c4b"
+    },
+    {
+      "path": "data-room/data/csat_survey.csv",
+      "bytes": 26218,
+      "sha256": "9c143fb8a1e004506a7e9729eb959313079c39e0fe805942df4a55050b1a7248"
+    },
+    {
+      "path": "data-room/data/customers.csv",
+      "bytes": 3264,
+      "sha256": "fb0832f0aad6371b63dd01b3455f1292be47b33472f81bc3f596b0900bdca607"
+    },
+    {
+      "path": "data-room/data/jira_escalations.json",
+      "bytes": 26005,
+      "sha256": "26014cf385b2ceda0022cb80b9b1417aabfec51f0ffecc6b0c797e8c0f346f86"
+    },
+    {
+      "path": "data-room/data/kb_articles.json",
+      "bytes": 8180,
+      "sha256": "dc00726328c3be5959b2bfedb1c6304fd09935df9b1bdfd4792473f48345f1ce"
+    },
+    {
+      "path": "data-room/data/monthly_cost_sheet.csv",
+      "bytes": 563,
+      "sha256": "ab31c68a0bb4620168600b626c114ded196bc7f425a54794453e962024db2fe1"
+    },
+    {
+      "path": "data-room/data/sla_breaches_q3.csv",
+      "bytes": 12751,
+      "sha256": "f62f9fcdd4b241a8a22a4c3c5141489dfc4435e4c32cfe0032b3c13e9aec885f"
+    },
+    {
+      "path": "data-room/data/tickets_export.json",
+      "bytes": 2086461,
+      "sha256": "dcad6ff532820bafccca6ccd6dfd820cf2adfd6a3521eee8a5e56525b742305b"
+    },
+    {
+      "path": "data-room/data/whatsapp_export.json",
+      "bytes": 71548,
+      "sha256": "70467fc42d189748f7b848733e2c93c18a61feca9548cffb04bbf8eef2eb124e"
+    },
+    {
+      "path": "data-room/integrations/contract_db_schema.sql",
+      "bytes": 1925,
+      "sha256": "97b0cc58d37864d4ff851313e3a35598dbe49fbe4502a89d6d8cc556f982c278"
+    },
+    {
+      "path": "data-room/integrations/payroll_api_openapi.yaml",
+      "bytes": 3629,
+      "sha256": "e9346a75cd94ebd34cb356dd5962c6d2a418cfb9c5685cefd483bfd565f33524"
+    },
+    {
+      "path": "data-room/integrations/statutory_rules.json",
+      "bytes": 1822,
+      "sha256": "46f02c0b091f58e28b57c95e33ea0a44f70750df8d7b11cedacdb6080d254ba9"
+    },
+    {
+      "path": "data-room/org/org_chart.json",
+      "bytes": 2832,
+      "sha256": "4776cfd23b408242c41e02444199334103d7bfeaef90777cb82ec89d9b0a1520"
+    },
+    {
+      "path": "data-room/org/stakeholders.md",
+      "bytes": 2163,
+      "sha256": "3c2bbdde0ef2760847697333722944826831a6f365fea3c19905a257d5bb6592"
+    },
+    {
+      "path": "data-room/process/escalation_policy.md",
+      "bytes": 1434,
+      "sha256": "a895074bcbbbcdda5f198b4c52d7a4f5b42a009db7d10311b94c2070ebd744c6"
+    },
+    {
+      "path": "data-room/process/payroll_week_runbook.md",
+      "bytes": 1370,
+      "sha256": "d0456b64df2af8d5bffedf0f73833f2e1f734b1ce0e78ec82000a7d49d3bb0d2"
+    },
+    {
+      "path": "data-room/process/sla_contract_excerpt.md",
+      "bytes": 2534,
+      "sha256": "cac288fa5d8883ca7d2027849c0a6999ddafcefd8af0b4f81ed0e12980821795"
+    },
+    {
+      "path": "data-room/process/ticket_triage_sop.md",
+      "bytes": 1932,
+      "sha256": "8cd2c26359edc1c51bb678e96298611b7cde3761d4fef4ce857735e00a83e35f"
+    },
+    {
+      "path": "data-room/security/incident_2026_05_payslip_leak.md",
+      "bytes": 2092,
+      "sha256": "ea0c7358cf7bfa02fcbe6009c0242ef20b62ad82ce32df3bc5ae302b7bfca7cc"
+    },
+    {
+      "path": "data-room/transcripts/01_ceo_rohan_mehta.md",
+      "bytes": 6614,
+      "sha256": "affefeca276e8db42bd70046d02e0eca76770ec328c86eda2ddf52977a00304a"
+    },
+    {
+      "path": "data-room/transcripts/02_cfo_anjali_krishnan.md",
+      "bytes": 6469,
+      "sha256": "ccdeae4ea6c98d743989d17a418a1c65ddb83c80f593d9a372c2932ed17d8b1d"
+    },
+    {
+      "path": "data-room/transcripts/03_head_of_support_priya_nair.md",
+      "bytes": 6325,
+      "sha256": "2a40b69cf2bc2c83bb9d6dfc41ef5383f997a847dadab43955d855af5a60b479"
+    },
+    {
+      "path": "data-room/transcripts/04_l2_lead_sandeep_rao.md",
+      "bytes": 6255,
+      "sha256": "fdbb4b9dee8b693abb15a60fe2dc20334ce0c89bf6a0f006f5fd5a9b814ac847"
+    },
+    {
+      "path": "data-room/transcripts/05_l1_agent_farhan_qureshi.md",
+      "bytes": 5764,
+      "sha256": "bb025032f7b236261f50fda5971cc8fee78e236ef43e2896e43f4411d9ccee5b"
+    },
+    {
+      "path": "data-room/transcripts/06_eng_manager_meera_iyer.md",
+      "bytes": 5999,
+      "sha256": "76a3c12b3173a01b9e4dfac90cc1730d0f40d263239faf37e98773cb1116bb66"
+    },
+    {
+      "path": "data-room/transcripts/07_dpo_karthik_subramanian.md",
+      "bytes": 6112,
+      "sha256": "1ebb2ad656274b1159525601ef0fda9372e562ecfcbde2359045ac01e20c5318"
+    },
+    {
+      "path": "data-room/transcripts/08_vp_sales_vikram_sethi.md",
+      "bytes": 4060,
+      "sha256": "ded90f057d8db8e2f260fd7139064a97be19782ad906d85817b98afe5d6aa7b4"
+    },
+    {
+      "path": "data-room/transcripts/09_customer_hr_admins_deepa_varghese_hassan_almansoori.md",
+      "bytes": 5883,
+      "sha256": "84776fa2038c5a26b48aa76f9d79b64020770fa68c0805715646954fcd3200e0"
+    },
+    {
+      "path": "data-room/vendor_pilot/invoice_converso_labs_2026.md",
+      "bytes": 1354,
+      "sha256": "ba35662f56740dec1ada0301eca00edb73eb44fca4eb1218e804cc5892fe3ae7"
+    },
+    {
+      "path": "data-room/vendor_pilot/postmortem_chatbot_pilot.md",
+      "bytes": 2603,
+      "sha256": "803c9de1a4f7738cf5b9bda99618e1861ea75b4a6ee65c238a0ae97e0bb04152"
+    },
+    {
+      "path": "generator/generate.py",
+      "bytes": 61014,
+      "sha256": "7dc8c88f77679e8f99b4d0c7161e58711e9f7f313749bd95db933009a5f919de"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1512,
+      "sha256": "09fd85d9c8c0f5b53f047fb1c72834d01e07d22154da03a79ca4cf36e42eda20"
+    },
+    {
+      "path": "Session 1 · Decoding the client.pdf",
+      "bytes": 426244,
+      "sha256": "08e1fe45176592f4c6c7ec36e2b3dd7ac6360b674fe742a330f7a0d901d10ed1"
+    },
+    {
+      "path": "Session 2 · Defining the problem.docx.md",
+      "bytes": 15776,
+      "sha256": "6b3d3bfdb309d10f7c749199211396301def967845c2aac628c3ae80f9b0bb0d"
+    },
+    {
+      "path": "Session 4 · Build it right.pdf",
+      "bytes": 1212399,
+      "sha256": "e85f520dd97fd86d0c8dfa8d2270f6b804542e1f380b8d57de73d34bbca6188e"
+    }
+  ]
+}

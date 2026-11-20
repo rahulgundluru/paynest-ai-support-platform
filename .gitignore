@@ -1,0 +1,45 @@
+# --- Source case data: never committed (public repo, no upstream licence) ---
+# Fetch with: python scripts/source_data.py fetch
+data/source/
+data/processed/
+trainer/
+
+# --- Secrets / local env ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# --- Node / Next.js ---
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+.pnpm-store/
+
+# --- Evaluation outputs (may contain masked ticket text; publish reports deliberately) ---
+evaluations/reports/runs/
+
+# --- OS / editors ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.zip
+
+# --- Local scratch (embedded test database, temp files) ---
+.local/

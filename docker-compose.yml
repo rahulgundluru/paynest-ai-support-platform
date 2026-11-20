@@ -1,0 +1,61 @@
+# Local development stack. Secrets come from .env (copy .env.example; never commit .env).
+name: paynest
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: paynest
+      POSTGRES_USER: paynest
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:5432:5432" # bound to localhost only
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./infrastructure/docker/postgres-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U paynest -d paynest"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  migrate:
+    build: ./backend
+    command: ["alembic", "upgrade", "head"]
+    environment:
+      DATABASE_URL: postgresql+asyncpg://paynest:${POSTGRES_PASSWORD}@db:5432/paynest
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    build: ./backend
+    environment:
+      ENVIRONMENT: local
+      DATABASE_URL: postgresql+asyncpg://paynest:${POSTGRES_PASSWORD}@db:5432/paynest
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env}
+      PII_VAULT_KEY: ${PII_VAULT_KEY:?set PII_VAULT_KEY in .env}
+      DATA_SOURCE_DIR: /data/source
+      COOKIE_SECURE: "false" # plain HTTP on localhost only; true behind TLS in AWS
+      LOG_LEVEL: INFO
+    volumes:
+      - ./data:/data:ro # source mirror (read-only) + manifest
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  web:
+    build: ./frontend
+    environment:
+      API_INTERNAL_URL: http://api:8000
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  pgdata:
