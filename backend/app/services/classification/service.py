@@ -23,21 +23,68 @@ from app.core.config import Settings
 from app.models.processing import Classification, ModelUsage
 from app.models.tickets import Ticket
 
+# Rule-based layer of injection detection (defence in depth; the model's is_injection is the second layer).
+# Families, not phrases: override verbs aimed at instructions, persona switches, fake role markers,
+# tool-call payloads, money/credential requests addressed to the assistant, decode/translate-then-execute,
+# in English, Hinglish, Hindi and Arabic.
 _INJECTION_PATTERNS = [
-    r"ignore (all |any )?(the )?(previous|prior|above) (instructions|prompts?)",
-    r"disregard (all |any )?(previous|prior|above|your) (instructions|rules)",
-    r"you are now (in )?(admin|developer|god|dan) mode",
-    r"(reveal|show|print|repeat) (your|the) (system )?(prompt|instructions)",
-    r"mark (refund|invoice|payment)\b.*\b(approved|paid)",
-    r"(list|send|give) (me )?(of )?all customer",
-    r"do not mention this (message|instruction)",
+    # override / forget the instructions (EN)
+    r"\b(ignore|disregard|forget|override|bypass)\b[^.\n]{0,40}"
+    r"\b(instructions?|prompts?|rules|guidelines|everything (above|before)|context)\b",
+    r"\bnew instructions?\s*:",
+    # persona / mode switch
+    r"\byou are now\b",
+    r"\bfrom now on,? you (are|will|must)\b",
+    r"\b(developer|admin|god|dan|jailbreak|unrestricted) mode\b",
+    r"\bact as (an? )?(admin|administrator|system|developer)\b",
+    # prompt extraction
+    r"\b(reveal|show|print|repeat|output)\b[^.\n]{0,20}\b(system prompt|your (prompt|instructions))\b",
+    # fake role markers and hidden comments
+    r"(^|\n)\s*(system|assistant|developer)\s*:",
+    r"<!--\s*(assistant|system|ai)\b",
+    r"\[(system|assistant)\]",
+    # tool-call style payloads
+    r"\"(action|tool|function)\"\s*:\s*\"[a-z_]*(approve|refund|credit|transfer|delete|pay)[a-z_]*\"",
+    # money / record changes demanded of the assistant
+    r"\bmark\b[^.\n]{0,30}\b(refund|invoice|payment)\b[^.\n]{0,30}\b(approved|paid)\b",
+    r"\bset\b[^.\n]{0,20}\bbalance to\b",
+    r"\b(authori[sz]e|instruct)\b[^.\n]{0,15}\byou to\b[^.\n]{0,20}\b(credit|refund|pay|transfer|approve)\b",
+    r"\b(always|automatically) approve\b",
+    # data / credential exfiltration
+    r"\b(list|send|give|share)\b[^.\n]{0,20}\ball customer",
+    r"\b(reply|respond|send|share|give)\b[^.\n]{0,25}\b(api key|password|secret|access token|credentials)\b",
+    # decode / translate then execute
+    r"\b(decode|translate)\b[^.\n]{0,60}\b(then|and)\b[^.\n]{0,15}\b(follow|do|execute|obey)\b",
+    # secrecy instructions
+    r"\bdo not (mention|tell anyone|disclose)\b[^.\n]{0,25}\b(this|message|instruction)",
+    # Hinglish
+    r"\b(instructions?|rules|niyam)\b[^.\n]{0,25}\b(ignore|bhool)\b[^.\n]{0,10}\b(karo|kar do|jao)\b",
+    # Hindi
+    r"(निर्देश|नियम)[^।\n]{0,25}(अनदेखा|नज़रअंदाज़|नजरअंदाज|भूल)",
+    # Arabic
+    r"(تجاهل|انس)[^.\n]{0,25}(التعليمات|القواعد|الأوامر)",
 ]
 _INJECTION = re.compile("|".join(f"(?:{p})" for p in _INJECTION_PATTERNS), re.IGNORECASE)
+_SPACED = re.compile(r"\b(?:\w\s){4,}\w\b")
+
+
+def _despace(text: str) -> str:
+    """Collapses letter-by-letter spacing ("i g n o r e") so obfuscated words are still matched."""
+    return _SPACED.sub(lambda m: m.group(0).replace(" ", ""), text)
 
 
 def injection_signals(*texts: str | None) -> list[str]:
-    """Deterministic screen for instructions aimed at an AI. Returns the matched phrases (redacted text only)."""
-    return [m.group(0) for t in texts if t for m in _INJECTION.finditer(t)]
+    """Rule-based screen for instructions aimed at an AI. Returns the matched phrases (redacted text only)."""
+    found: list[str] = []
+    for t in texts:
+        if not t:
+            continue
+        for candidate in (t, _despace(t)):
+            for m in _INJECTION.finditer(candidate):
+                phrase = m.group(0).strip()
+                if phrase not in found:
+                    found.append(phrase)
+    return found
 
 
 class ClassificationOutput(BaseModel):

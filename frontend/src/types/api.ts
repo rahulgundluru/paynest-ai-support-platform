@@ -29,7 +29,9 @@ export type Permission =
   | "approvals:decide"
   | "pii:reveal"
   | "settings:read"
-  | "settings:manage";
+  | "settings:manage"
+  | "evaluations:read"
+  | "evaluations:run";
 
 export interface Sla {
   applicable: boolean;

@@ -139,14 +139,22 @@ async def validation_context(session: AsyncSession, ticket: Ticket, statutory: b
     customer = await session.get(Customer, ticket.customer_id) if ticket.customer_id else None
     names = list(await session.scalars(select(Customer.name)))
     windows: dict[str, list[DocValidity]] = {}
-    for doc_id, start, end in (
+    superseded: dict[str, str] = {}
+    for doc_id, start, end, replaced_by in (
         await session.execute(
-            select(KnowledgeDocument.id, KnowledgeDocumentVersion.effective_from, KnowledgeDocumentVersion.effective_to)
+            select(
+                KnowledgeDocument.id,
+                KnowledgeDocumentVersion.effective_from,
+                KnowledgeDocumentVersion.effective_to,
+                KnowledgeDocumentVersion.superseded_by,
+            )
             .join(KnowledgeDocumentVersion, KnowledgeDocumentVersion.document_id == KnowledgeDocument.id)
             .where(KnowledgeDocument.status == "active", KnowledgeDocumentVersion.approval_status == "approved")
         )
     ).all():
         windows.setdefault(doc_id, []).append(DocValidity(start, end))
+        if replaced_by:
+            superseded[doc_id] = replaced_by
     rules = [
         RuleFacts(r.rule_id, r.region, r.effective_from, r.old_value, r.new_value)
         for r in await session.scalars(select(StatutoryRule))
@@ -165,6 +173,7 @@ async def validation_context(session: AsyncSession, ticket: Ticket, statutory: b
         rules=rules,
         documents=windows,
         statutory_answer=statutory,
+        superseded_by=superseded,
     )
 
 

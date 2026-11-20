@@ -17,12 +17,11 @@ All case data is synthetic; see [docs/discovery](docs/discovery/README.md) for t
 | 3 AI pipeline | KB with effective dates, date-aware retrieval, dedupe/incidents, deterministic routing, classifier + Bedrock adapter | **Done locally except model-dependent parts** ([details](docs/architecture/ai-pipeline.md)); G2 + embeddings need Bedrock access |
 | 4 Human & security | Review queue + approval workflow, output validation (G6), learned memory, DPO-only PII reveal, rate limiting | **Done locally** ([details](docs/architecture/human-approval-security.md)); AI drafts, semantic cache and DB row-level security pending |
 | 5 Frontend | Live dashboard and charts, processing monitor, customers, settings (runtime config) | **Done locally** ([details](docs/architecture/frontend.md)) |
-| 6 Evaluation | G1–G7 runners, reports, CI gates | Pending |
+| 6 Evaluation | G1–G7 runners + report, evaluation and cost screens, CI evaluation job, Promptfoo config | **Done locally** ([framework](docs/evaluation/README.md), [latest report](docs/evaluation/report.md)); model-dependent parts not run |
 | 7 AWS | Deployment | Pending |
 | 8 Delivery | Docs, diagrams, demo, presentation | Pending |
 
-Screens for unbuilt modules (Evaluations, Cost analytics) appear in the navigation as non-interactive "Phase 6"
-entries; no screen shows estimated or placeholder business metrics.
+No screen shows estimated or placeholder business metrics; anything that needs an AI model is labelled as not run.
 
 ## Layout
 
@@ -47,6 +46,7 @@ docker compose exec api python -m app.cli index-knowledge
 docker compose exec api python -m app.cli detect-duplicates
 docker compose exec api python -m app.cli route-all
 docker compose exec api python -m app.cli build-review-queue
+docker compose exec api python -m app.cli evaluate --report /tmp/report.md
 docker compose run --rm -e PAYNEST_NEW_USER_PASSWORD api python -m app.cli create-user \
   --email you@example.com --name "Your Name" --role admin --region IN --region UAE
 ```

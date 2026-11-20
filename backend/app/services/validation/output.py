@@ -42,6 +42,7 @@ _COLUMNS = re.compile(r"\b(\d+)[\s-]*columns?\b", re.IGNORECASE)
 _SIF = re.compile(r"\bsif\s*v(\d)\b", re.IGNORECASE)
 _FY = re.compile(r"\bfy\s?(\d{2}-\d{2})\b", re.IGNORECASE)
 _LEGAL_SUFFIX = re.compile(r"\s+(pvt ltd|ltd|llc|fze|fzco|trust)$", re.IGNORECASE)
+_OLD_WORDS = re.compile(r"\b(old|older|previous|earlier|outdated|superseded|no longer|former)\b", re.IGNORECASE)
 
 
 @dataclass(frozen=True)
@@ -70,6 +71,7 @@ class ValidationContext:
     rules: list[RuleFacts]
     documents: dict[str, list[DocValidity]]  # document id -> versions' windows
     statutory_answer: bool = False
+    superseded_by: dict[str, str] = field(default_factory=dict)  # stale doc id -> rule id
 
 
 @dataclass
@@ -175,12 +177,27 @@ def validate_draft(text: str | None, ctx: ValidationContext) -> ValidationReport
     checks.append(Check("statutory_values_current", not problems, "; ".join(problems) or "ok"))
 
     cited = sorted(set(_CITATION.findall(body)))
-    stale = [c for c in cited if c not in ctx.documents or not _valid_on(ctx.documents[c], ctx.ticket_date)]
+
+    def explained_as_superseded(doc_id: str) -> bool:
+        # Citing an outdated article is allowed only to say it is outdated, next to the rule now in force.
+        rule = ctx.superseded_by.get(doc_id)
+        if not rule or rule not in cited or not _valid_on(ctx.documents.get(rule, []), ctx.ticket_date):
+            return False
+        return any(
+            _OLD_WORDS.search(body[max(0, m.start() - 60) : m.end() + 60]) for m in re.finditer(re.escape(doc_id), body)
+        )
+
+    stale = [
+        c
+        for c in cited
+        if (c not in ctx.documents or not _valid_on(ctx.documents[c], ctx.ticket_date))
+        and not explained_as_superseded(c)
+    ]
     checks.append(
         Check("citations_in_force", not stale, f"not in force on {ctx.ticket_date}: {stale}" if stale else "ok")
     )
     if ctx.statutory_answer:
-        in_force = [c for c in cited if c not in stale]
+        in_force = [c for c in cited if c in ctx.documents and _valid_on(ctx.documents[c], ctx.ticket_date)]
         checks.append(
             Check(
                 "statutory_citation",

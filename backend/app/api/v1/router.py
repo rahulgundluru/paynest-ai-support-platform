@@ -3,12 +3,14 @@ from __future__ import annotations
 from fastapi import APIRouter
 
 from app.api.v1 import (
+    analytics,
     approvals,
     audit_logs,
     auth,
     customers,
     dashboard,
     duplicates,
+    evaluations,
     knowledge,
     monitor,
     processing,
@@ -32,3 +34,5 @@ api_router.include_router(processing_ai.router)
 api_router.include_router(approvals.router)
 api_router.include_router(dashboard.router)
 api_router.include_router(settings.router)
+api_router.include_router(evaluations.router)
+api_router.include_router(analytics.router)

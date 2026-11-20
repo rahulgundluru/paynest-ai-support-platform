@@ -12,11 +12,13 @@ from pathlib import Path
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.models.evaluation import MonthlyCost
 from app.models.reference import Agent, Customer, FinanceSlaBreach
 
 CUSTOMERS_FILE = "data-room/data/customers.csv"
 AGENTS_FILE = "data-room/data/agent_roster.csv"
 BREACHES_FILE = "data-room/data/sla_breaches_q3.csv"
+COSTS_FILE = "data-room/data/monthly_cost_sheet.csv"
 
 
 def sha256_file(path: Path) -> str:
@@ -32,17 +34,20 @@ def _date(value: str) -> date | None:
     return date.fromisoformat(value) if value else None
 
 
-def _read_sources(source_dir: Path) -> tuple[str, list[dict[str, str]], list[dict[str, str]], list[dict[str, str]]]:
+def _read_sources(
+    source_dir: Path,
+) -> tuple[str, list[dict[str, str]], list[dict[str, str]], list[dict[str, str]], list[dict[str, str]]]:
     return (
         sha256_file(source_dir / CUSTOMERS_FILE),
         _rows(source_dir / CUSTOMERS_FILE),
         _rows(source_dir / AGENTS_FILE),
         _rows(source_dir / BREACHES_FILE),
+        _rows(source_dir / COSTS_FILE),
     )
 
 
 async def load_reference(session: AsyncSession, source_dir: Path) -> dict[str, int]:
-    sha, customer_rows, agent_rows, breach_rows = await asyncio.to_thread(_read_sources, source_dir)
+    sha, customer_rows, agent_rows, breach_rows, cost_rows = await asyncio.to_thread(_read_sources, source_dir)
     customers = [
         {
             "customer_id": r["customer_id"],
@@ -109,4 +114,31 @@ async def load_reference(session: AsyncSession, source_dir: Path) -> dict[str, i
             set_={k: stmt_b.excluded[k] for k in breaches[0] if k != "breach_id"},
         )
     )
-    return {"customers": len(customers), "agents": len(agents), "finance_breaches": len(breaches)}
+    costs = [
+        {
+            "month": r["month"],
+            "tickets_received_all_customers": int(r["tickets_received_all_customers"]),
+            "tickets_in_ops_extract": int(r["tickets_in_ops_extract"]) if r["tickets_in_ops_extract"] else None,
+            "agent_fte": int(r["agent_fte"]),
+            "agent_loaded_cost_usd": Decimal(r["agent_loaded_cost_usd"]),
+            "tooling_usd": Decimal(r["tooling_usd"]),
+            "vendor_pilot_usd": Decimal(r["vendor_pilot_usd"]),
+            "sla_credits_paid_usd": Decimal(r["sla_credits_paid_usd"]),
+            "cost_per_ticket_excl_credits_usd": Decimal(r["cost_per_ticket_excl_credits_usd"]),
+            "cost_per_ticket_incl_credits_usd": Decimal(r["cost_per_ticket_incl_credits_usd"]),
+            "notes": r["notes"] or None,
+        }
+        for r in cost_rows
+    ]
+    stmt_c = insert(MonthlyCost).values(costs)
+    await session.execute(
+        stmt_c.on_conflict_do_update(
+            index_elements=[MonthlyCost.month], set_={k: stmt_c.excluded[k] for k in costs[0] if k != "month"}
+        )
+    )
+    return {
+        "customers": len(customers),
+        "agents": len(agents),
+        "finance_breaches": len(breaches),
+        "monthly_costs": len(costs),
+    }

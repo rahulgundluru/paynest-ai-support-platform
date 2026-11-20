@@ -2,6 +2,7 @@
 
 from app.models.approvals import Approval, ApprovalEvent, LearnedMemory
 from app.models.audit import AuditLog
+from app.models.evaluation import EvaluationResult, EvaluationRun, MonthlyCost
 from app.models.identity import AuthSession, Region, RoleName, User, UserRegionScope, UserRole
 from app.models.knowledge import (
     KnowledgeChunk,
@@ -27,6 +28,9 @@ from app.models.tickets import (
 )
 
 __all__ = [
+    "EvaluationResult",
+    "EvaluationRun",
+    "MonthlyCost",
     "SystemConfiguration",
     "Approval",
     "ApprovalEvent",
